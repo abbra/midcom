@@ -13,7 +13,7 @@
  */
 class midcom_core_componentloader
 {
-    private $manifests = array();
+    public $manifests = array();
     private $tried_to_load = array();
     private $interfaces = array();
 
@@ -43,7 +43,7 @@ class midcom_core_componentloader
         return true;
     }
     
-    public function load($component)
+    public function load($component, $object = null)
     {
         if (!$this->can_load($component))
         {
@@ -56,7 +56,8 @@ class midcom_core_componentloader
         {        
             // No component directory
             $this->tried_to_load[$component] = false;
-            return false;
+
+            throw new Exception("Component {$component} directory not found.");
         }
         
         $component_interface_file = "{$component_directory}/interface.php";
@@ -65,13 +66,32 @@ class midcom_core_componentloader
             // No interface class
             // TODO: Should we default to some baseclass?
             $this->tried_to_load[$component] = false;
-            return false;
+            
+            throw new Exception("Component {$component} interface class file not found.");
         }
         require($component_interface_file);
-        
-        $this->interfaces[$component] = new $component();
+
+        // Load configuration for the component
+        $configuration = new midcom_core_services_configuration_yaml($component, $object);
+
+        // Load the interface class
+        $this->interfaces[$component] = new $component($configuration);
+
         $this->tried_to_load[$component] = true;
-        return true;
+        return $this->interfaces[$component];
+    }
+    
+    public function load_template($component, $template)
+    {
+        $component_directory = $this->component_to_filepath($component);
+        $template_file = "{$component_directory}/templates/{$template}.php";
+        if (!file_exists($template_file))
+        {
+            // TODO: Should we just ignore this silently instead?
+            throw new Exception("Component {$component} template file {$template} not found.");
+        }
+        
+        return file_get_contents($template_file);
     }
 
     /**
@@ -86,6 +106,12 @@ class midcom_core_componentloader
         return MIDCOM_ROOT . '/' . $component;// . strtr($component, '_', '/');
     }
 
+    /**
+     * Load a component manifest file
+     *
+     * @param string $manifest_file Path of the manifest file
+     * @return boolean
+     */
     private function load_manifest($manifest_file)
     {
         $manifest_yaml = file_get_contents($manifest_file);
