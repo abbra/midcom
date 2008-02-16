@@ -17,7 +17,7 @@ class midcom_core_component_loader
     private $tried_to_load = array();
     private $interfaces = array();
 
-    function __construct()
+    public function __construct()
     {
         $this->load_all_manifests();
     }
@@ -110,7 +110,6 @@ class midcom_core_component_loader
      * Load a component manifest file
      *
      * @param string $manifest_file Path of the manifest file
-     * @return boolean
      */
     private function load_manifest($manifest_file)
     {
@@ -119,19 +118,16 @@ class midcom_core_component_loader
         // TODO: Implement using http://spyc.sourceforge.net/ if syck is not available
         $manifest = syck_load($manifest_yaml);
         
-        if (isset($this->manifests[$manifest['component']]))
+        if (!isset($this->manifests[$manifest['component']]))
         {
-            return true;
+            $this->manifests[$manifest['component']] = $manifest;
         }
-        
-        $this->manifests[$manifest['component']] = $manifest;
-        return true;
     }
     
     private function load_all_manifests()
     {
         // TODO: Cache
-        exec('find ' . MIDCOM_ROOT . ' -follow -type f -name "manifest.yml"', $manifests);
+        exec('find ' . escapeshellarg(MIDCOM_ROOT) . ' -follow -type f -name ' . escapeshellarg('manifest.yml'), $manifests);
         foreach ($manifests as $manifest)
         {
             $this->load_manifest($manifest);

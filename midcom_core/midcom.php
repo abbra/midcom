@@ -99,12 +99,10 @@ class midcom_core_midcom
             }
         }
 
-        if (!file_exists($path))
+        if (file_exists($path))
         {
-            throw new Exception("File {$path} not found, aborting.");
+            require($path);
         }
-        
-        require($path);
     }
     
     /**
