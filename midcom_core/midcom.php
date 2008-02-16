@@ -30,7 +30,7 @@ class midcom_core_midcom
 
         // Load the request dispatcher
         $dispatcher_implementation = "midcom_core_services_dispatcher_{$dispatcher}";
-        //$this->dispatcher = new $dispatcher_implementation();
+        $this->dispatcher = new $dispatcher_implementation();
         
         $this->load_base_services();
         $this->create_context();
@@ -101,7 +101,7 @@ class midcom_core_midcom
         $context_id = count($this->contexts);
         $this->contexts[$context_id] = array
         (
-            'page'                 => $this->load_page_data(),
+            'mimetype'             => 'text/html',
             'template_engine'      => 'tal',
             'template_entry_point' => 'ROOT',
             'content_entry_point'  => 'content',
@@ -165,7 +165,7 @@ class midcom_core_midcom
      * @param int $context_id ID of the current context
      * @return array Context data
      */
-    private function set_context_item($key, $value, $context_id = null)
+    public function set_context_item($key, $value, $context_id = null)
     {
         if (is_null($context_id))
         {
@@ -195,7 +195,7 @@ class midcom_core_midcom
         
         $path = str_replace('_', '/', $class_name) . '.php';
         
-        // TODO: Check against component names
+        // FIXME: Do not check against component names (ie make phing build script to build correct file tree from source)
         $path = MIDCOM_ROOT . '/' . str_replace('midcom/core', 'midcom_core', $path);
         $path = str_replace('net/nemein/news', 'net_nemein_news', $path);
 
@@ -212,42 +212,24 @@ class midcom_core_midcom
      */
     public function process()
     {
-        $page_data = $this->get_context_item('page');
-        if (   !isset($page_data['component'])
-            || !$page_data['component'])
-        {        
+        $this->dispatcher->populate_environment_data();
+        try
+        {
+            $component = $this->get_context_item('component');
+        }
+        catch (Exception $e)
+        {
+            return;
+        }
+        
+        if (!$component)
+        {
             return;
         }
 
-        $page = new midgard_page();
-        $page->get_by_id($_MIDGARD['page']);
+        $this->dispatcher->dispatch($component);
         
-        $component_instance = $this->componentloader->load($page_data['component'], $page);
-        $routes = $component_instance->configuration->get('routes');
-        foreach ($routes as $route_id => $route_configuration)
-        {
-            // Before we have a dispatcher we just accept first route
-            $controller_class = $route_configuration['controller'];
-            $controller = new $controller_class($component_instance);
-            
-            // Then call the action
-            $action_method = "action_{$route_configuration['action']}";
-            $data = array();
-            $controller->$action_method($route_id, &$data, array());
-            $this->set_context_item($page_data['component'], $data);
-            
-            // Set other context data from route
-            if (isset($route_configuration['template_entry_point']))
-            {
-                $this->set_context_item('template_entry_point', $route_configuration['template_entry_point']);
-            }
-            if (isset($route_configuration['content_entry_point']))
-            {
-                $this->set_context_item('content_entry_point', $route_configuration['content_entry_point']);
-            }
-            
-            break;
-        }
+        //header('Content-Type: ' . $this->get_context_item('mimetype'));
     }
 
     /**
@@ -256,7 +238,18 @@ class midcom_core_midcom
     public function template()
     {
         $template_entry_point = $_MIDCOM->get_context_item('template_entry_point');
-        eval('?>' . mgd_preparse(mgd_template($template_entry_point)));
+
+        $component = $this->get_context_item('component');
+        if (   !mgd_is_element_loaded($template_entry_point)
+            && $component)
+        {        
+            // Load element from component templates
+            echo $this->componentloader->load_template($component, $template_entry_point);
+        }
+        else
+        {
+            eval('?>' . mgd_preparse(mgd_template($template_entry_point)));
+        }
     }
     
     /**
@@ -268,12 +261,13 @@ class midcom_core_midcom
 
         $page_data = $this->get_context_item('page');
 
+        $component = $this->get_context_item('component');
+
         if (   !mgd_is_element_loaded($content_entry_point)
-            && isset($page_data['component'])
-            && !$page_data['component'])
+            && $component)
         {        
             // Load element from component templates
-            echo $this->componentloader->load_template($page_data['component'], $content_entry_point);
+            echo $this->componentloader->load_template($component, $content_entry_point);
         }
         else
         {
@@ -313,6 +307,8 @@ class midcom_core_midcom
                 
                 $content = $tal->execute();
                 $timer->setMarker('post-execute');                
+                break;
+            default:
                 break;
         }
 
