@@ -112,6 +112,11 @@ class midcom_core_midcom
      */
     public function process()
     {
+        if ($this->timer)
+        {
+            $this->timer->setMarker('MidCOM::process');
+        }
+        
         $this->dispatcher->populate_environment_data();
         try
         {
@@ -134,8 +139,12 @@ class midcom_core_midcom
 
         $this->dispatcher->initialize($component);
         $this->dispatcher->dispatch();
-        
+
         header('Content-Type: ' . $this->context->get_item('mimetype'));
+        if ($this->timer)
+        {
+            $this->timer->setMarker('MidCOM::process ended');
+        }
     }
 }
 ?>
