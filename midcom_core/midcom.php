@@ -274,7 +274,7 @@ class midcom_core_midcom
             eval('?>' . mgd_preparse(mgd_template($content_entry_point)));
         }
     }
-    
+
     /**
      * Show the loaded contents using the template engine
      *
