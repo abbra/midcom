@@ -18,6 +18,8 @@ class midcom_core_midcom
     public $componentloader;
     public $dispatcher;
     
+    public $navigation;
+    
     private $contexts = array();
     private $current_context = 0;
 
@@ -48,6 +50,9 @@ class midcom_core_midcom
         
         // Load the component loader
         $this->componentloader = new midcom_core_componentloader();
+        
+        // Load the navigation helper
+        $this->navigation = new midcom_core_helpers_navigation();
     }
     
     /**
@@ -81,7 +86,7 @@ class midcom_core_midcom
             $page_data['title']     = $mc->get_subkey($guid, 'title');
             $page_data['component'] = $mc->get_subkey($guid, 'component');
         }
-        
+
         return $page_data;     
     }
     
@@ -116,7 +121,7 @@ class midcom_core_midcom
         {
             $context_id = $this->current_context;
         }
-        
+
         if (!isset($this->contexts[$context_id]))
         {
             throw new Exception("MidCOM context {$context_id} not found.");
@@ -262,6 +267,7 @@ class midcom_core_midcom
         $content_entry_point = $_MIDCOM->get_context_item('content_entry_point');
 
         $page_data = $this->get_context_item('page');
+
         if (   !mgd_is_element_loaded($content_entry_point)
             && isset($page_data['component'])
             && !$page_data['component'])
@@ -282,22 +288,40 @@ class midcom_core_midcom
      */
     public function display($content)
     {
+        require_once 'Benchmark/Timer.php';
+        $timer =& new Benchmark_Timer(true);
+        
         $data = $this->get_context();
         switch ($data['template_engine'])
         {
             case 'tal':
                 require('PHPTAL.php');
+                $timer->setMarker('post-require');
+                
                 $tal = new PHPTAL();
                 $tal->setSource($content);
+                $timer->setMarker('post-source');
+                
+                $tal->navigation = $this->navigation;
+                $timer->setMarker('post-set-navigation');
+                
                 foreach ($data as $key => $value)
                 {
                     $tal->$key = $value;
+                    $timer->setMarker("post-set-{$key}");
                 }
+                
                 $content = $tal->execute();
+                $timer->setMarker('post-execute');                
                 break;
         }
 
         echo $content;
+        
+        if ($this->configuration->get('show_benchmark'))
+        {
+            $timer->display();
+        }
     }
 
 }
