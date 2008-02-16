@@ -282,31 +282,56 @@ class midcom_core_midcom
      */
     public function display($content)
     {
-        require_once 'Benchmark/Timer.php';
-        $timer =& new Benchmark_Timer(true);
+        $use_timer = $this->configuration->get('show_benchmark');
+        $timer = null;
+        if ($use_timer)
+        {
+            require_once 'Benchmark/Timer.php';
+            $timer =& new Benchmark_Timer(true);            
+        }
         
         $data = $this->get_context();
         switch ($data['template_engine'])
         {
             case 'tal':
                 require('PHPTAL.php');
-                $timer->setMarker('post-require');
+                
+                if ($use_timer)
+                {
+                    $timer->setMarker('post-require');
+                }
                 
                 $tal = new PHPTAL();
                 $tal->setSource($content);
-                $timer->setMarker('post-source');
+
+                if ($use_timer)
+                {
+                    $timer->setMarker('post-source');
+                }
                 
                 $tal->navigation = $this->navigation;
-                $timer->setMarker('post-set-navigation');
+                
+                if ($use_timer)
+                {
+                    $timer->setMarker('post-set-navigation');
+                }
                 
                 foreach ($data as $key => $value)
                 {
                     $tal->$key = $value;
-                    $timer->setMarker("post-set-{$key}");
+                    
+                    if ($use_timer)
+                    {
+                        $timer->setMarker("post-set-{$key}");
+                    }
                 }
                 
                 $content = $tal->execute();
-                $timer->setMarker('post-execute');                
+                
+                if ($use_timer)
+                {
+                    $timer->setMarker('post-execute');
+                }
                 break;
             default:
                 break;
@@ -314,7 +339,7 @@ class midcom_core_midcom
 
         echo $content;
         
-        if ($this->configuration->get('show_benchmark'))
+        if ($use_timer)
         {
             $timer->display();
         }
