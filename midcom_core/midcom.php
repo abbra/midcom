@@ -114,7 +114,8 @@ class midcom_core_midcom
             return;
         }
 
-        $this->dispatcher->dispatch($component);
+        $this->dispatcher->initialize($component);
+        $this->dispatcher->dispatch();
         
         //header('Content-Type: ' . $this->context->get_item('mimetype'));
     }
