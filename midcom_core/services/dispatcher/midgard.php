@@ -18,7 +18,6 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
     public $argv = array();
     public $get = array();
     public $component_name = '';
-    public $component_instance = false;
     protected $route_id = false;
     protected $action_arguments = array();
 
@@ -58,10 +57,11 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         {
             $page_data['guid'] = $guid;
             $page_data['title'] = $mc->get_subkey($guid, 'title');
-            $_MIDCOM->context->set_item('component', $mc->get_subkey($guid, 'component'));
+            $_MIDCOM->context->component = $mc->get_subkey($guid, 'component');
         }
         
-        $_MIDCOM->context->set_item('page', $page_data);   
+        $_MIDCOM->context->page = $page_data;
+        $_MIDCOM->context->prefix = $_MIDGARD['self'];
     }
 
     public function initialize($component)
@@ -75,7 +75,7 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         $page->get_by_id($_MIDGARD['page']);
         
         $this->component_name = $component;
-        $this->component_instance = $_MIDCOM->componentloader->load($this->component_name, $page);
+        $_MIDCOM->context->component_instance = $_MIDCOM->componentloader->load($this->component_name, $page);
     }
 
     /**
@@ -87,7 +87,7 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         {
             $_MIDCOM->timer->setMarker('MidCOM dispatcher::dispatch');
         }
-        $route_definitions = $this->component_instance->configuration->get('routes');
+        $route_definitions = $_MIDCOM->context->component_instance->configuration->get('routes');
 
         $route_id_map = array();
         foreach ($route_definitions as $route_id => $route_configuration)
@@ -106,7 +106,8 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         $selected_route_configuration = $route_definitions[$this->route_id];
 
         $controller_class = $selected_route_configuration['controller'];
-        $controller = new $controller_class($this->component_instance);
+        $controller = new $controller_class($_MIDCOM->context->component_instance);
+        $controller->dispatcher = $this;
         
         // Then call the route_id
         $action_method = "action_{$selected_route_configuration['action']}";
@@ -122,15 +123,15 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         // Set other context data from route
         if (isset($selected_route_configuration['mimetype']))
         {
-            $_MIDCOM->context->set_item('mimetype', $selected_route_configuration['mimetype']);
+            $_MIDCOM->context->mimetype = $selected_route_configuration['mimetype'];
         }
         if (isset($selected_route_configuration['template_entry_point']))
         {
-            $_MIDCOM->context->set_item('template_entry_point', $selected_route_configuration['template_entry_point']);
+            $_MIDCOM->context->template_entry_point = $selected_route_configuration['template_entry_point'];
         }
         if (isset($selected_route_configuration['content_entry_point']))
         {
-            $_MIDCOM->context->set_item('content_entry_point', $selected_route_configuration['content_entry_point']);
+            $_MIDCOM->context->content_entry_point = $selected_route_configuration['content_entry_point'];
         }
     }
 
@@ -143,12 +144,10 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
      */
     public function generate_url($route_id, array $args)
     {
-        // FIXME: determine prefix from component instance
-        $prefix = $_MIDGARD['self'];
-        $route_definitions = $this->component_instance->configuration->get('routes');
+        $route_definitions = $_MIDCOM->context->component_instance->configuration->get('routes');
         if (!isset($route_definitions[$route_id]))
         {
-            throw new OutOfBoundsException("route_id '{$route_id}' not found in routes configuratio");
+            throw new OutOfBoundsException("route_id '{$route_id}' not found in routes configuration");
         }
         $route = $route_definitions[$route_id]['route'];
         $link = $route;
@@ -164,7 +163,7 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
             throw new UnexpectedValueException('Missing arguments: ' . implode(', ', $link_remaining_args));
         }
 
-        return preg_replace('%/{2,}%', '/', $prefix . $link);
+        return preg_replace('%/{2,}%', '/', $_MIDCOM->context->prefix . $link);
     }
 
     /**

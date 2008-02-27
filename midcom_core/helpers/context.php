@@ -23,8 +23,6 @@ class midcom_core_helpers_context
     
     /**
      * Create and prepare a new component context.
-     *
-     * @access private
      */
     public function create()
     {
@@ -37,6 +35,28 @@ class midcom_core_helpers_context
             'content_entry_point'  => 'content',
         );
         $this->current_context = $context_id;
+    }
+    
+    /**
+     * Remove a context and return to previous.
+     */
+    public function delete()
+    {
+        if ($this->current_context == 0)
+        {
+            $this->contexts = array();
+            return;
+        }
+        
+        $old_context = $this->current_context;
+        $this->current_context--;
+        
+        unset($this->contexts[$old_context]);
+    }
+    
+    public function get_current_context()
+    {
+        return $this->current_context;
     }
     
     /**
@@ -139,8 +159,8 @@ class midcom_core_helpers_context
      **/
     public function __isset($key)
     {
-        if (    array_key_exists($this->current_context, $this->contexts)
-            and array_key_exists($key, $this->contexts[$this->current_context]))
+        if (   isset($this->contexts[$this->current_context])
+            && isset($this->contexts[$this->current_context][$key]))
         {
             return true;
         }

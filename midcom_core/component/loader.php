@@ -51,6 +51,12 @@ class midcom_core_component_loader
             return false;
         }
         
+        if (isset($this->tried_to_load[$component]))
+        {
+            // We have already loaded (or tried and failed to load) the component
+            return $this->interfaces[$component];
+        }
+        
         $component_directory = $this->component_to_filepath($component);
         if (!is_dir($component_directory))
         {        
@@ -72,9 +78,17 @@ class midcom_core_component_loader
         require($component_interface_file);
 
         // Load configuration for the component
+        if ($_MIDCOM->timer)
+        {
+            $_MIDCOM->timer->setMarker("MidCOM component loaded::load::configuration");
+        }
         $configuration = new midcom_core_services_configuration_yaml($component, $object);
 
         // Load the interface class
+        if ($_MIDCOM->timer)
+        {
+            $_MIDCOM->timer->setMarker("MidCOM component loaded::load::instantiate");
+        }
         $this->interfaces[$component] = new $component($configuration);
 
         $this->tried_to_load[$component] = true;

@@ -18,7 +18,8 @@ if (!defined('MIDCOM_ROOT'))
  *
  * This makes life much, much better when making static copies for whatever reason
  */
-if (   !preg_match('%\?|/$|midcom-.+-|/.+\..+$%', $_SERVER['REQUEST_URI']) 
+if (   isset($_SERVER['REQUEST_URI'])
+    && !preg_match('%\?|/$|midcom-.+-|/.+\..+$%', $_SERVER['REQUEST_URI']) 
     && empty($_POST))
 {
     header('HTTP/1.0 301 Moved Permanently');
@@ -34,5 +35,4 @@ require(MIDCOM_ROOT . '/midcom_core/exceptionhandler.php');
 
 // Start up MidCOM
 require(MIDCOM_ROOT . '/midcom_core/midcom.php');
-$_MIDCOM = new midcom_core_midcom();
 ?>
