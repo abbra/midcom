@@ -9,6 +9,10 @@ date_formats:
     long: '%x %X'
 default_timezone: UTC
 routes:
+    page_show:
+        controller: midcom_core_controllers_page
+        action: show
+        route: /
     page_edit:
         controller: midcom_core_controllers_page
         action: edit
