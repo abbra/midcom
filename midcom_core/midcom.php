@@ -138,7 +138,8 @@ class midcom_core_midcom
         {
             $this->timer->setMarker('MidCOM::process');
         }
-        
+
+        $_MIDCOM->templating->append_directory(MIDCOM_ROOT . '/midcom_core/templates');        
         $this->dispatcher->populate_environment_data();
         try
         {
