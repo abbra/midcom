@@ -6,3 +6,9 @@ date_formats:
     short: '%d/%m/%Y'
     long: '%x %X'
 default_timezone: UTC
+routes:
+    page_edit:
+        controller: midcom_core_controllers_page
+        action: edit
+        route: /__midcom/edit
+        content_entry_point: midcom-edit-page
