@@ -1,6 +1,7 @@
 <?php
 /**
  * @package midcom_core
+ *
  */
 ?>
 <form method="post">
