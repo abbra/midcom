@@ -18,7 +18,7 @@
  */
 class midcom_helper_datamanager_exception_datamanager extends Exception
 {
-    // Redefine the exception so message isn't optional
+    // Redefine the exception so code isn't optional
     public function __construct($message, $code=0)
     {
         parent::__construct($message, $code);
@@ -58,6 +58,33 @@ class midcom_helper_datamanager_exception_schema extends midcom_helper_datamanag
  * @package midcom_helper_datamanager
  */
 class midcom_helper_datamanager_exception_widget extends midcom_helper_datamanager_exception_datamanager
+{
+}
+
+/**
+ * Datamanager "saved" state exception
+ *
+ * @package midcom_helper_datamanager
+ */
+class midcom_helper_datamanager_exception_save extends midcom_helper_datamanager_exception_datamanager
+{
+}
+
+/**
+ * Datamanager "cancel" state exception
+ *
+ * @package midcom_helper_datamanager
+ */
+class midcom_helper_datamanager_exception_cancel extends midcom_helper_datamanager_exception_datamanager
+{
+}
+
+/**
+ * Datamanager validation exception
+ *
+ * @package midcom_helper_datamanager
+ */
+class midcom_helper_datamanager_exception_validation extends midcom_helper_datamanager_exception_datamanager
 {
 }
 
