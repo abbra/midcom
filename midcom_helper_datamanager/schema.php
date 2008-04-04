@@ -6,13 +6,14 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  */
 
+include_once 'exceptions.php';
+
 /**
  * Datamanager Schema class
  *
  * @package midcom_helper_datamanager
  */
-
-class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
+class midcom_helper_datamanager_schema
 {
     /**
      * The general field listing, indexed by their name. It contains the full field record
@@ -76,9 +77,13 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
      */
     public $operations = array('save' => '', 'cancel' => '');
     
-    public function initialize($schemadb, $name = null, $schemadb_path = null)
+    private $configuration;
+    
+    public function __construct($schemadb, $name = null, $schemadb_path = null)
     {
         $this->schemadb_path = $schemadb_path;
+        
+        $this->configuration = new midcom_core_services_configuration_yaml('midcom_helper_datamanager');
         
         $this->load_schemadb($schemadb);
 
@@ -92,22 +97,22 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
     }
     
     /**
-     * This function loads the schema database into the class, either from a copy
-     * already in memory, or from a URL resolvable by midcom_get_snippet_content.
+     * This function loads the schema database into the class
      *
      * @param mixed $schemadb Either the path or the already loaded schema database
      *     to use.
-     * @see midcom_get_snippet_content()
      */
     private function load_schemadb($schemadb)
     {
         if (is_string($schemadb))
         {
-            $this->raw_schemadb = midcom_get_snippet_content($schemadb);
-            if ($this->raw_schemadb === false)
+            try
             {
-                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema definition in '{$schemadb}', see above for PHP errors.");
-                // This will exit.
+                $this->raw_schemadb = midcom_core_helpers_snippet::get($schemadb);
+            }
+            catch (OutOfBoundsException $e)
+            {
+                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema definition in '{$schemadb}'.");
             }
         }
         else if (is_array($schemadb))
@@ -117,7 +122,6 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         else
         {
             throw new midcom_helper_datamanager_exception_schema('Failed to access the schema database: Invalid variable type while constructing.');
-            // This will exit.
         }
     }
     
@@ -130,7 +134,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
     private function load_schema($name)
     {
         // Setup the raw schema reference
-        if (! array_key_exists($name, $this->raw_schemadb))
+        if (! isset($this->raw_schemadb[$name]))
         {
             throw new midcom_helper_datamanager_exception_schema("The schema {$name} was not found in the schema database.");
             // This will exit.
@@ -345,12 +349,13 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         if (is_string($raw_db))
         {
             $path = $raw_db;
-            $data = midcom_get_snippet_content($raw_db);
-            $result = eval ("\$raw_db = Array ( {$data}\n );");
-            if ($result === false)
+            try
             {
-                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema database loaded from '{$raw_db}', see above for PHP errors.");
-                // This will exit.
+                $raw_db = midcom_core_helpers_snippet::get($path);
+            }
+            catch (OutOfBoundsException $e)
+            {
+                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema database loaded from '{$path}'");
             }
         }
 
