@@ -77,7 +77,7 @@ class midcom_helper_datamanager_datamanager
         {
             throw new Exception('given schema is not instance of datamanager schema');
         }
-        
+
         $this->load_widgets();
         $this->load_types();
 
