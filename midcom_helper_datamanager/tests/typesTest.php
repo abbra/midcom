@@ -30,7 +30,10 @@ class midcom_helper_datamanager_tests_types extends midcom_tests_testcase
         $dm->set_storage($data['article']);
         
         $this->assertTrue(is_array($dm->schema->fields));
-        
+
+        echo "\n\n\$dm->types:\n";
+        var_dump($dm->types);
+
         foreach ($dm->schema->fields as $name => $data)
         {
             echo "\n\n\$dm->types->{$name}:\n";

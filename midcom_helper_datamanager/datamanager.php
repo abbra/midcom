@@ -22,6 +22,7 @@ class midcom_helper_datamanager_datamanager
     private $schemadb = null;
     public $schema = null;
     public $schema_name = null;
+    protected $form = null;
 
     /**
      * This is the storage implementation which is used for operation on the types. It encapsulates
@@ -32,7 +33,16 @@ class midcom_helper_datamanager_datamanager
     public $storage = null;
     
     public $types = null;
-    public $widgets = null;
+
+    public function &get_form($form_class = 'simple')
+    {
+        if (strpos($form_class, '_') === false)
+        {
+            $form_class = "midcom_helper_datamanager_form_{$form_class}";
+        }
+        $this->form = new $form_class($this->schema, $this->types);
+        return $this->form;
+    }
 
     public function __construct(&$schemadb)
     {
@@ -49,8 +59,10 @@ class midcom_helper_datamanager_datamanager
             
             return;
         }
-        
+
         $this->schemadb =& $schemadb;
+        // This might not be exactly correct but we need to be able to get types etc initialized for now to draw form
+        $this->storage = new midcom_helper_datamanager_storage_null($this->schemadb);
     }
 
     /**
@@ -92,8 +104,11 @@ class midcom_helper_datamanager_datamanager
             throw new midcom_helper_datamanager_exception_schema('given schema is not instance of datamanager schema');
         }
 
-        // $this->load_types();
-        // $this->load_widgets();
+        $this->load_types();
+        if ($this->form instanceof midcom_helper_datamanager_form)
+        {
+            $this->form->load_widgets();
+        }
 
         return true;
     }
@@ -107,18 +122,6 @@ class midcom_helper_datamanager_datamanager
         $this->types = new midcom_helper_datamanager_typeproxy($this->schema, $this->storage);
     }
     
-    /**
-     * Clears possible dangling references and instance new widget proxy object
-     */
-    private function load_widgets()
-    {
-        if (! $this->types instanceof midcom_helper_datamanager_typeproxy)
-        {
-            throw new midcom_helper_datamanager_exception_datamanager('$this->types is not instance of midcom_helper_datamanager_typeproxy');
-        }
-        unset($this->widgets);
-        $this->widgets = new midcom_helper_datamanager_widgetproxy($this->schema, $this->storage, $this->types);
-    }
 
     /**
      * This function sets the system to use a specific storage object. You can pass
@@ -154,7 +157,10 @@ class midcom_helper_datamanager_datamanager
         }
 
         $this->load_types();
-        $this->load_widgets();
+        if ($this->form instanceof midcom_helper_datamanager_form)
+        {
+            $this->form->load_widgets();
+        }
 
         // For reasons I do not completely comprehend, PHP drops the storage references into the types
         // in the lines above. Right now the only solution (except debugging this 5 hours long line
@@ -259,7 +265,7 @@ class midcom_helper_datamanager_datamanager
      public function __destructor()
      {
      }
-     */   
+     */
 
 }
 

@@ -12,14 +12,14 @@
  *
  * @package midcom_helper_datamanager
  */
-interface midcom_helper_datamanager_widget
+interface midcom_helper_datamanager_widget_interface
 {
     /**
      * Initializes and configures the widget.
      *
      * @see midcom_helper_datamanager_widget_baseclass::__construct
      */
-    function __construct($name, $config, &$schema, &$type, $namespace);
+    function intialize($name, $config, &$schema, &$type, $namespace);
 
     /**
      * Set the form reference.
@@ -27,22 +27,6 @@ interface midcom_helper_datamanager_widget
      * @see midcom_helper_datamanager_widget_baseclass::set_form
      */
     function set_form(&$form);
-    
-    /**
-     * This function is called  before the configuration keys are merged into the types
-     * configuration.
-     *
-     * @see midcom_helper_datamanager_widget_baseclass::on_configuring
-     */
-    // function on_configuring($config);
-    
-    /**
-     * This event handler is called during construction, so passing references to $this to the
-     * outside is unsafe at this point.
-     *
-     * @see midcom_helper_datamanager_widget_baseclass::on_initalize
-     */
-    // function on_initialize();
 
     /**
      * This event handler is called if and only if the Formmanager detects an actual
@@ -76,7 +60,7 @@ interface midcom_helper_datamanager_widget
      *
      * @see midcom_helper_datamanager_widget_baseclass::sync_type_with_widget
      */
-    function sync_type_with_widget($results);
+    function sync_widget2type($results);
 
     /**
      * This is a shortcut to the translate_schema_string function.
@@ -88,29 +72,6 @@ interface midcom_helper_datamanager_widget
     // function translate($string);
 
     /**
-     * This call, which must be overridden by subclasses, adds the necessary form elements
-     * to the form passed by reference.
-     *
-     * This must be overridden in subclasses (honor the reference!).
-     *
-     * @see midcom_helper_datamanager_widget_baseclass::add_elements_to_form
-     */
-    function add_elements_to_form();
-
-    /**
-     * Returns the default value for this field as required by HTML_Quickform. 
-     * 
-     * You may either return a single value for simple types, or an array of form 
-     * field name / value pairs in case of composite types. A value of null indicates 
-     * no applicable default.
-     *
-     * This default implementation returns null unconditionally.
-     *
-     * @see midcom_helper_datamanager_widget_baseclass::get_default
-     */
-    function get_default();
-
-    /**
      * When called, this method should display the current data without any
      * editing widget or surrounding braces in plain and simple HTML.
      *
@@ -118,6 +79,7 @@ interface midcom_helper_datamanager_widget
      *
      * @see midcom_helper_datamanager_widget_baseclass::render_content
      */
+    // TODO: rethink, good idea in principle but needs to be compatible with the $form->widgets->fieldname->as_html approach
     function render_content();
     
     /**
@@ -167,8 +129,10 @@ interface midcom_helper_datamanager_widget
  *
  * @package midcom_helper_datamanager
  */
-class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datamanager_widget
+class midcom_helper_datamanager_widget implements midcom_helper_datamanager_widget_interface
 {
+    protected $frozen = false;
+
     /**
      * This is a reference to the type we're based on.
      *
@@ -205,7 +169,6 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      * @var Array
      */
     protected $field = null;
-    
 
     /**
      * This is the Namespace to use for all HTML/CSS/JS elements. 
@@ -236,7 +199,7 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      * @param boolean $initialize_dependencies Whether to load JS and other dependencies on initialize
      * @return boolean Indicating success. If this is false, the type will be unusable.
      */
-    public function __construct($name, $config, &$schema, &$type, $namespace)
+    public function initialize($name, $config, &$schema, &$type, $namespace)
     {
         $this->name = $name;
         $this->schema =& $schema;
@@ -270,12 +233,12 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
     {
         $this->form =& $form;
     }
-    
+
     /**
      * This function is called  before the configuration keys are merged into the types
      * configuration.
      */
-    private function on_configuring() {}
+    protected function on_configuring() {}
 
     /**
      * This event handler is called during construction, so passing references to $this to the
@@ -307,33 +270,6 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
     public function on_submit($results) {}
 
     /**
-     * This call, which must be overridden by subclasses, adds the necessary form elements
-     * to the form passed by reference.
-     *
-     * This must be overridden in subclasses
-     */
-    public function add_elements_to_form()
-    {
-        die ('The function ' . __CLASS__ . '::' . __FUNCTION__ . ' must be implemented in subclasses.');
-    }
-
-    /**
-     * Returns the default value for this field as required by HTML_Quickform. 
-     * 
-     * You may either return a single value for simple types, or an array of form 
-     * field name / value pairs in case of composite types. A value of null indicates 
-     * no applicable default.
-     *
-     * This default implementation returns null unconditionally.
-     *
-     * @return mixed The default value as outlined above.
-     */
-    public function get_default()
-    {
-        return null;
-    }
-
-    /**
      * This function is invoked if the widget should extract the corresponding data
      * from the form results passed in $results. 
      * 
@@ -343,9 +279,9 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      * @param Array $results The complete form results, you need to extract all values
      *     relevant for your type yourself.
      */
-    public function sync_type_with_widget($results)
+    public function sync_widget2type($results)
     {
-         die ('The function ' . __CLASS__ . '::' . __FUNCTION__ . ' must be implemented in subclasses.');
+        throw new midcom_helper_datamanager_exception_widget('Method ' . __FUNCTION__ . ' must be overridden.');
     }
 
     /**
@@ -355,7 +291,7 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      * @return string The translated string.
      * @see midcom_helper_datamanager_schema::translate_schema_string()
      */
-    private function translate($string)
+    protected function translate($string)
     {
         return $this->schema->translate_schema_string($string);
     }
@@ -371,6 +307,8 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
         return $this->type->convert_to_html();
     }
     
+////// ABOVE this line stuff jerry copied from DM2
+
     /**
      * Freezes all form elements associated with the widget. 
      * 
@@ -379,11 +317,7 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      */
     public function freeze()
     {
-        $element =& $this->form->getElement($this->name);
-        if (method_exists($element, 'freeze'))
-        {
-            $element->freeze();
-        }
+        $this->frozen = true;
     }
 
     /**
@@ -394,8 +328,7 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      */
     public function unfreeze()
     {
-        $element =& $this->form->getElement($this->name);
-        $element->unfreeze();
+        $this->frozen = false;
     }
 
     /**
@@ -408,9 +341,41 @@ class midcom_helper_datamanager_widget_baseclass implements midcom_helper_datama
      */
     public function is_frozen()
     {
-        $element =& $this->form->getElement($this->name);
-        return $element->isFrozen();
+        return $this->frozen;
     }
+
+    /**
+     * Magic getters for the contents of the widget in a given format
+     */
+    public function __get($key)
+    {
+        switch ($key)
+        {
+            case 'as_html':
+                return $this->render_html();
+            case 'as_tal':
+                return $this->render_tal();
+        }
+    }
+
+    /**
+     * Renders the form controls (if not frozen) or read-only view (if frozen)
+     * of the widget as html
+     */
+    public function render_html()
+    {
+        throw new midcom_helper_datamanager_exception_widget('Method ' . __FUNCTION__ . ' must be overridden.');
+    }
+
+    /**
+     * Renders the form controls (if not frozen) or read-only view (if frozen)
+     * of the widget as TAL
+     */
+    public function render_tal()
+    {
+        throw new midcom_helper_datamanager_exception_widget('Method ' . __FUNCTION__ . ' must be overridden.');
+    }
+
 }
 
 ?>

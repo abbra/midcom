@@ -21,7 +21,7 @@ class midcom_helper_datamanager_widgetproxy
     private $types = false;
     protected $namespace = '';
 
-    public function __construct(&$schema, &$storage, &$types)
+    public function __construct(&$schema, &$storage, &$types, &$namespace)
     {
         if (! $schema instanceof midcom_helper_datamanager_schema)
         {
@@ -38,6 +38,7 @@ class midcom_helper_datamanager_widgetproxy
             throw new midcom_helper_datamanager_exception_widget('given types is not instance of midcom_helper_datamanager_typeproxy');
         }
         $this->types =& $types;
+        $this->namespace =& $namespace;
     }
 
     public function __get($name)
