@@ -232,8 +232,8 @@ class midcom_helper_datamanager_form
         $values = array();
         foreach ($this->schema->field_order as $field_name)
         {
-            $var = $this->widgets->$field_name->namespace;
-            //$var = "{$this->namespace}_{$field_name}";
+            $widget =& $this->widgets->$field_name;
+            $var = "{$widget->namespace}_{$widget->main_input_name}";
             if (isset($_FILES[$var]))
             {
                 $values[$field_name] = $_POST[$var];

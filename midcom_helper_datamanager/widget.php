@@ -181,6 +181,11 @@ class midcom_helper_datamanager_widget implements midcom_helper_datamanager_widg
     public $namespace = null;
 
     /**
+     * Name  (combined with the namespace above) of the input that the widget wants to see in POST
+     */
+    public $main_input_name = 'value';
+
+    /**
      * The form we are using.
      */
     protected $form = null;

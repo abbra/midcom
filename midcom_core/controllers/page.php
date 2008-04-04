@@ -28,17 +28,27 @@ class midcom_core_controllers_page
         {
             throw new midcom_exception_notfound("No Midgard page found");
         }
+        
         $data['page'] = new midgard_page();
         $data['page']->get_by_id($_MIDGARD['page']);
         
         $_MIDCOM->authorization->require_do('midgard:update', $data['page']);
         
-        if (isset($_POST['save']))
+        // Load the page via Datamanager for configurability
+        $_MIDCOM->componentloader->load('midcom_helper_datamanager');
+        $dm = new midcom_helper_datamanager_datamanager($this->configuration->get('schemadb_default'));
+        $dm->autoset_storage($data['page']);
+        $data['page_dm'] =& $dm;
+
+        // Handle saves through the datamanager
+        $data['page_dm_form'] =& $data['page_dm']->get_form('simple');
+        try
         {
-            $data['page']->title = $_POST['title'];
-            $data['page']->content = $_POST['content'];
-            $data['page']->update();
-            
+            $data['page_dm_form']->process();
+        }
+        catch (midcom_helper_datamanager_exception_datamanager $e)
+        {
+            // TODO: add uimessage of $e->getMessage();
             header("Location: {$_MIDCOM->context->prefix}");
             exit();
         }
