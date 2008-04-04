@@ -136,7 +136,7 @@ class midcom_helper_datamanager_schema
         // Setup the raw schema reference
         if (! isset($this->raw_schemadb[$name]))
         {
-            throw new Exception("The schema {$name} was not found in the schema database.");
+            throw new midcom_helper_datamanager_exception_schema("The schema {$name} was not found in the schema database.");
             // This will exit.
         }
         $this->raw_schema =& $this->raw_schemadb[$name];
@@ -351,11 +351,11 @@ class midcom_helper_datamanager_schema
             $path = $raw_db;
             try
             {
-                $raw_db = midcom_core_helpers_snippet::get($raw_db);
+                $raw_db = midcom_core_helpers_snippet::get($path);
             }
             catch (OutOfBoundsException $e)
             {
-                throw new midcom_helper_datamanager_exception_type("Failed to parse the schema database loaded from '{$raw_db}'");
+                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema database loaded from '{$path}'");
             }
         }
 
@@ -368,7 +368,7 @@ class midcom_helper_datamanager_schema
         
         return $schemadb;
     }
-    
+
     /**
      * Check if given field name exists in this schema
      * @param string $name name of the schema field
