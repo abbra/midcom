@@ -106,7 +106,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
             $this->raw_schemadb = midcom_get_snippet_content($schemadb);
             if ($this->raw_schemadb === false)
             {
-                throw new Exception("Failed to parse the schema definition in '{$schemadb}', see above for PHP errors.");
+                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema definition in '{$schemadb}', see above for PHP errors.");
                 // This will exit.
             }
         }
@@ -116,7 +116,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         }
         else
         {
-            throw new Exception('Failed to access the schema database: Invalid variable type while constructing.');
+            throw new midcom_helper_datamanager_exception_schema('Failed to access the schema database: Invalid variable type while constructing.');
             // This will exit.
         }
     }
@@ -132,7 +132,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         // Setup the raw schema reference
         if (! array_key_exists($name, $this->raw_schemadb))
         {
-            throw new Exception("The schema {$name} was not found in the schema database.");
+            throw new midcom_helper_datamanager_exception_schema("The schema {$name} was not found in the schema database.");
             // This will exit.
         }
         $this->raw_schema =& $this->raw_schemadb[$name];
@@ -216,7 +216,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
     {
         if (array_key_exists($name, $this->fields))
         {
-            throw new Exception("Duplicate field {$name} encountered, schema operation is invalid. Aborting.");
+            throw new midcom_helper_datamanager_exception_schema("Duplicate field {$name} encountered, schema operation is invalid. Aborting.");
             // This will exit.
         }
 
@@ -349,7 +349,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
             $result = eval ("\$raw_db = Array ( {$data}\n );");
             if ($result === false)
             {
-                throw new Exception("Failed to parse the schema database loaded from '{$raw_db}', see above for PHP errors.");
+                throw new midcom_helper_datamanager_exception_schema("Failed to parse the schema database loaded from '{$raw_db}', see above for PHP errors.");
                 // This will exit.
             }
         }
@@ -363,6 +363,7 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         
         return $schemadb;
     }
+
     /**
      * Check if given field name exists in this schema
      * @param string $name name of the schema field
