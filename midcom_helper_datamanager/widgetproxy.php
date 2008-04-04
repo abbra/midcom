@@ -116,8 +116,8 @@ class midcom_helper_datamanager_widgetproxy
             $widget_class = "midcom_helper_datamanager_widget_{$widget_class}";
         }
 
-        $this->widgets[$name] = new $classname();
-        if (! $this->widgets[$name]->initialize($name, $config['widget_config'], $this->schema, $this->types->$name, $this->namespace))
+        $this->widgets[$name] = new $widget_class();
+        if (! $this->widgets[$name]->initialize($name, $config['widget_config'], $this->schema, $this->types->$name, "{$this->namespace}_{$name}"))
         {
             return false;
         }

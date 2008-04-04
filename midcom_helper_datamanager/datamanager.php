@@ -34,16 +34,6 @@ class midcom_helper_datamanager_datamanager
     
     public $types = null;
 
-    public function &get_form($form_class = 'simple')
-    {
-        if (strpos($form_class, '_') === false)
-        {
-            $form_class = "midcom_helper_datamanager_form_{$form_class}";
-        }
-        $this->form = new $form_class($this->schema, $this->types);
-        return $this->form;
-    }
-
     public function __construct(&$schemadb)
     {
         if (! $schemadb instanceof midcom_helper_datamanager_schema)
@@ -61,8 +51,17 @@ class midcom_helper_datamanager_datamanager
         }
 
         $this->schemadb =& $schemadb;
-        // This might not be exactly correct but we need to be able to get types etc initialized for now to draw form
-        $this->storage = new midcom_helper_datamanager_storage_null($this->schemadb);
+
+    }
+
+    public function &get_form($form_class = 'simple')
+    {
+        if (strpos($form_class, '_') === false)
+        {
+            $form_class = "midcom_helper_datamanager_form_{$form_class}";
+        }
+        $this->form = new $form_class($this->schema, $this->types, $this->storage, $this);
+        return $this->form;
     }
 
     /**
@@ -119,6 +118,10 @@ class midcom_helper_datamanager_datamanager
     private function load_types()
     {
         unset($this->types);
+        if (! $this->storage instanceof midcom_helper_datamanager_storage)
+        {
+            $this->storage = new midcom_helper_datamanager_storage_null($this->schema);
+        }
         $this->types = new midcom_helper_datamanager_typeproxy($this->schema, $this->storage);
     }
     

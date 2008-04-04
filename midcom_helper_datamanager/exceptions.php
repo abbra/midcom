@@ -68,6 +68,10 @@ class midcom_helper_datamanager_exception_widget extends midcom_helper_datamanag
  */
 class midcom_helper_datamanager_exception_save extends midcom_helper_datamanager_exception_datamanager
 {
+    public function __construct($message = 'save', $code = 0)
+    {
+        parent::__construct($message, $code);
+    }
 }
 
 /**
@@ -77,6 +81,10 @@ class midcom_helper_datamanager_exception_save extends midcom_helper_datamanager
  */
 class midcom_helper_datamanager_exception_cancel extends midcom_helper_datamanager_exception_datamanager
 {
+    public function __construct($message = 'cancel', $code = 0)
+    {
+        parent::__construct($message, $code);
+    }
 }
 
 /**

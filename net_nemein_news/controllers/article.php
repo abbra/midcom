@@ -56,13 +56,16 @@ class net_nemein_news_controllers_article
         $this->load_article($data, $args);
 
         $_MIDCOM->authorization->require_do('midgard:update', $data['article']);
-
-        if (isset($_POST['save']))
+        
+        // Handle saves through the datamanager
+        $data['article_dm_form'] =& $data['article_dm']->get_form('simple');
+        try
         {
-            $data['article_dm']->types->title->value = $_POST['title'];
-            $data['article_dm']->types->content->value = $_POST['content'];
-            $data['article_dm']->save();
-            
+            $data['article_dm_form']->process();
+        }
+        catch (midcom_helper_datamanager_exception_datamanager $e)
+        {
+            // TODO: add uimessage of $e->getMessage();
             header('Location: ' . $_MIDCOM->dispatcher->generate_url('show', array('name' => $data['article']->name)));
             exit();
         }

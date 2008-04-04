@@ -32,6 +32,8 @@ class midcom_helper_datamanager_form
     protected $types = null;
 
     protected $datamanager = null;
+    
+    protected $storage = null;
 
     public $widgets = null;
     
@@ -58,7 +60,7 @@ class midcom_helper_datamanager_form
      */
     public function __construct(&$schema, &$types, &$storage, &$datamanager)
     {
-        if (! $types instanceof midcom_helper_datamanager_datamanagery)
+        if (! $datamanager instanceof midcom_helper_datamanager_datamanager)
         {
             throw new midcom_helper_datamanager_exception_datamanager('given datamanager is not instance of midcom_helper_datamanager');
         }
@@ -78,6 +80,8 @@ class midcom_helper_datamanager_form
             throw new midcom_helper_datamanager_exception_widget('given types is not instance of midcom_helper_datamanager_typeproxy');
         }
         $this->types =& $types;
+
+        $this->resolve_namespace();
 
         $this->load_widgets();
     }
@@ -106,6 +110,7 @@ class midcom_helper_datamanager_form
      */
     public function __get($key)
     {
+        // Whole form in different formats
         switch ($key)
         {
             case 'as_html':
@@ -114,6 +119,8 @@ class midcom_helper_datamanager_form
             case 'as_tal':
                 return $this->render_tal_all();
         }
+        
+        // Form parts in different formats
         if (preg_match('/^(.*?)_as_(.*?)$/', $key, $matches))
         {
             $property = $matches[1];
@@ -166,21 +173,36 @@ class midcom_helper_datamanager_form
 
     public function render_start_html()
     {
-        return '<form method="post">';
+        return "<form method=\"post\" class=\"midcom_helper_datamanager\">\n";
+    }
+    
+    public function render_toolbar_html()
+    {
+        $output  = "<div class=\"form_toolbar\">\n";
+        
+        foreach ($this->schema->operations as $operation => $config)
+        {
+            $label = ucfirst($operation);
+            $accesskey = substr($operation, 0, 1);
+            $output .= "    <input type=\"submit\" name=\"{$this->namespace}_{$operation}\" class=\"{$operation}\" accesskey=\"{$accesskey}\" value=\"{$label}\" />\n";
+        }
+        
+        $output .= "</div>\n";
+        return $output;
     }
 
     public function render_end_html()
     {
-        return '</form>';
+        return "</form>\n";
     }
 
     protected function pass_results_to_method($method, &$results)
     {
         foreach ($this->schema->field_order as $field_name)
         {
-            if (!array_key_exists($name, $results))
+            if (!array_key_exists($field_name, $results))
             {
-                $results[$name] = null;
+                $results[$field_name] = null;
             }
             $this->widgets->$field_name->$method($results);
         }
@@ -188,9 +210,10 @@ class midcom_helper_datamanager_form
 
     public function compute_form_result()
     {
-        foreach ($this->schema->operations as $operation)
+        foreach ($this->schema->operations as $operation => $config)
         {
             $var = "{$this->namespace}_{$operation}";
+
             if (isset($_POST[$var]))
             {
                 return $operation;
@@ -209,7 +232,8 @@ class midcom_helper_datamanager_form
         $values = array();
         foreach ($this->schema->field_order as $field_name)
         {
-            $var = "{$this->namespace}_{$field_name}";
+            $var = $this->widgets->$field_name->namespace;
+            //$var = "{$this->namespace}_{$field_name}";
             if (isset($_FILES[$var]))
             {
                 $values[$field_name] = $_POST[$var];
@@ -221,6 +245,7 @@ class midcom_helper_datamanager_form
                 continue;
             }
         }
+
         return $values;
     }
 }

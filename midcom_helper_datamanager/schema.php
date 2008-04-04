@@ -251,6 +251,12 @@ class midcom_helper_datamanager_schema
             // this will exit
         }
         
+        if (   !isset($config['title'])
+            || empty($config['title']))
+        {
+            $config['title'] = $config['name'];
+        }
+        
         /* Rest of the defaults */
         
         // Simple ones

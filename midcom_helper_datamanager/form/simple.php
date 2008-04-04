@@ -11,7 +11,7 @@
  *
  * @package midcom_helper_datamanager
  */
-class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_form_simple
+class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_form
 {
 
     /**
@@ -24,9 +24,10 @@ class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_fo
         switch ($operation)
         {
             case 'cancel':
-                throw new midcom_helper_datamanager_exception_datamanager_cancel();
+                throw new midcom_helper_datamanager_exception_cancel();
             
             case 'previous':
+            case 'edit':
                 // What ?
                 break;
 
@@ -40,7 +41,7 @@ class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_fo
                 $this->pass_results_to_method('on_submit', $results);
                 $this->pass_results_to_method('sync_widget2type', $results);
                 $this->datamanager->save();
-                throw new midcom_helper_datamanager_exception_datamanager_save();
+                throw new midcom_helper_datamanager_exception_save();
                 // and then what ?
                 break;
 

@@ -7,6 +7,12 @@
  */
 
 /**
+ * FIXME: Since we're not using quickform anymore due to it's many annoyances and limitations
+ * we need to make bunch of small helpers for escaping values to safe for html/tal, probably
+ * handiest way to use them is the have them as methods in the baseclass
+ */
+
+/**
  * Datamanager Data Type interface.
  *
  *
@@ -19,7 +25,7 @@ interface midcom_helper_datamanager_widget_interface
      *
      * @see midcom_helper_datamanager_widget_baseclass::__construct
      */
-    function intialize($name, $config, &$schema, &$type, $namespace);
+    function initialize($name, $config, &$schema, &$type, $namespace);
 
     /**
      * Set the form reference.
@@ -172,7 +178,7 @@ class midcom_helper_datamanager_widget implements midcom_helper_datamanager_widg
      *
      * @var string
      */
-    private $namespace = null;
+    public $namespace = null;
 
     /**
      * The form we are using.
@@ -197,7 +203,6 @@ class midcom_helper_datamanager_widget implements midcom_helper_datamanager_widg
         $this->field =& $schema->fields[$this->name];
         $this->type =& $type;
         $this->namespace = $namespace;
-        $this->initialize_dependencies = $initialize_dependencies;
 
         // Call the event handler for configuration in case we have some defaults that cannot
         // be covered by the class initializers.

@@ -121,7 +121,8 @@ class midcom_helper_datamanager_widget_textarea extends midcom_helper_datamanage
      */
     public function render_html()
     {
-        $output = "<textarea name='{$this->namespace}_{$this->name}' size={$this->size}";
+        $output =  "<label for='{$this->namespace}'><span>{$this->field['title']}</span>\n";
+        $output .= "    <textarea id='{$this->namespace}' name='{$this->namespace}' size='{$this->size}'";
         if ($this->maxlenght > 0)
         {
             $output .= " maxlenght={$maxlenght}";
@@ -130,7 +131,8 @@ class midcom_helper_datamanager_widget_textarea extends midcom_helper_datamanage
         {
             $output .= ' disabled';
         }
-        $output .= ">{$this->type->value}</textarea>";
+        $output .= ">{$this->type->value}</textarea>\n";
+        $output .= "</label>\n";
         return $output;
     }
 }
