@@ -82,7 +82,7 @@ class midcom_core_midcom
         
         // Load the navigation helper
         //$this->navigation = new midcom_core_helpers_navigation();
-        
+
         // Load the head helper
         $this->head = new midcom_core_helpers_head
         (
