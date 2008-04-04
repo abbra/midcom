@@ -7,7 +7,7 @@ cache_directory: __MIDGARDCACHE__/midgard
 enable_benchmark: false
 enable_included_list: false
 enable_jquery_framework: false
-enable_js_midcom: false
+enable_js_midcom: true
 js_midcom_config: 'enable_watchers: true, debug: true'
 date_formats:
     short: '%d/%m/%Y'

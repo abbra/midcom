@@ -35,6 +35,9 @@ require_once('PHPUnit/Framework.php');
 
 require_once('midcom_core/framework.php');
 
+/**
+ * @package midcom_tests
+ */
 class midcom_tests_testcase extends PHPUnit_Framework_TestCase
 {    
     protected function setUp()

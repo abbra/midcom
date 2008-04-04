@@ -1,6 +1,6 @@
 <?php
 /**
- * @package midcom_core
+ * @package midcom_tests
  * @author The Midgard Project, http://www.midgard-project.org
  * @copyright The Midgard Project, http://www.midgard-project.org
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
@@ -39,6 +39,9 @@ if (! defined('MIDCOM_TESTS_ENABLE_OUTPUT')) {
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
+/**
+ * @package midcom_tests
+ */
 class midcom_tests_all
 {   
     public static function main()

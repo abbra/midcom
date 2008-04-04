@@ -59,6 +59,11 @@ class org_openpsa_qbpager_pager
             $pager_id = $classname;
         }
         
+        if (!class_exists($classname))
+        {
+            throw new Exception("MgdSchema class {$classname} not loaded.");
+        }
+        
         $this->pager_id = $pager_id;
         $this->qb = new midgard_query_builder($classname);
         // Make another QB for counting, we need to do this to avoid trouble with core internal references system
