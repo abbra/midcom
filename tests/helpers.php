@@ -10,6 +10,9 @@ if (! defined('MIDCOM_TESTS_ENABLE_OUTPUT')) {
     define('MIDCOM_TESTS_ENABLE_OUTPUT', true);
 }
 
+/**
+ * @package midcom_tests
+ */
 class midcom_core_tests_helpers
 {
     public static function get_tests($root_file, $root_class, $add_skip = null)

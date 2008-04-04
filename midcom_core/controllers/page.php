@@ -80,6 +80,23 @@ class midcom_core_controllers_page
         $data['page'] = new midgard_page();
         $data['page']->get_by_id($_MIDGARD['page']);
         
+        if (!$data['page']->up)
+        {
+            // Root page, disable deletion?
+            $uimessages = $_MIDCOM->serviceloader->load('uimessages');
+            $uimessages->add
+            (
+                array
+                (
+                    'type' => 'warning',
+                    'title' => 'MidCOM',
+                    'message' => 'Disallowing deletion of the website root page',
+                )
+            );
+            header("Location: {$_MIDGARD['prefix']}/");
+            exit();
+        }
+        
         $data['parent'] = new midgard_page();
         $data['parent']->get_by_id($data['page']->up);
         
@@ -87,7 +104,7 @@ class midcom_core_controllers_page
         if(isset($_POST['delete']))
         {
             $data['page']->delete();
-            header("Location: /"); // TODO: This needs a better redirect
+            header("Location: {$_MIDGARD['prefix']}/"); // TODO: This needs a better redirect
             exit();     
         }
     

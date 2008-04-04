@@ -63,15 +63,6 @@ interface midcom_helper_datamanager_widget_interface
     function sync_widget2type($results);
 
     /**
-     * This is a shortcut to the translate_schema_string function.
-     *
-     * @param string $string The string to be translated.
-     * @return string The translated string.
-     * @see midcom_helper_datamanager_widget_baseclass::translate
-     */
-    // function translate($string);
-
-    /**
      * When called, this method should display the current data without any
      * editing widget or surrounding braces in plain and simple HTML.
      *

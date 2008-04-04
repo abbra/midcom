@@ -430,7 +430,7 @@ class midcom_core_services_templating_midgard implements midcom_core_services_te
                 }
                 
                 $tal->uimessages = false;
-                $uimessages = new midcom_core_services_uimessages();
+                $uimessages = $_MIDCOM->serviceloader->load('uimessages');
                 if (   $uimessages->has_messages()
                     && $uimessages->can_view())
                 {
@@ -509,7 +509,7 @@ class midcom_core_services_templating_midgard implements midcom_core_services_te
         }
         
         ///TODO: Connect this to some signal that tells the MidCOM execution has ended.
-        $uimessages = new midcom_core_services_uimessages();
+        $uimessages = $_MIDCOM->serviceloader->load('uimessages');
         $uimessages->store();
     }
 }
