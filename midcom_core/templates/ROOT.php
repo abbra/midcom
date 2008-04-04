@@ -11,6 +11,7 @@ echo '<?' . 'xml version="1.0"' . '?>';
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title tal:content="page/title">Midgardian</title>
+        <?php $_MIDCOM->head->print_elements(); ?>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css">
             BODY {
