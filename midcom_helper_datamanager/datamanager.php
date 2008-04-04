@@ -31,9 +31,9 @@ class midcom_helper_datamanager_datamanager
      */
     public $storage = null;
     
-    protected $types = array();
-    protected $widgets = array();
-    
+    protected $types = null;
+    protected $widgets = null;
+
     public function initialize(&$schemadb)
     {
         $this->schemadb =& $schemadb;
@@ -77,94 +77,29 @@ class midcom_helper_datamanager_datamanager
         {
             throw new Exception('given schema is not instance of datamanager schema');
         }
-        
+
         $this->load_widgets();
         $this->load_types();
 
         return true;
     }
-    
-    private function load_widgets()
-    {
-        $this->widgets = array();
 
-        foreach ($this->schema->fields as $name => $config)
-        {
-            if (! $this->load_widget($name, $config))
-            {
-                return false;
-            }
-        }
-    }
-    
-    public function load_widget($name, $config = null)
-    {
-        if ($config == null)
-        {
-            $config = $this->schema->fields[$name];            
-        }
-        
-        //TODO: Add fallback to types default widget
-        if (! isset($config['widget']) )
-        {
-            throw new Exception("The field {$name} is missing widget");
-        }
-        
-        $widget_class = $config['widget'];
-        
-        if (strpos($widget_class, '_') === false)
-        {
-            $widget_class = "midcom_helper_datamanager_widget_{$widget_class}";
-        }
-
-        $this->widgets[$name] = new $widget_class();
-        if (! $this->widgets[$name]->initialize($name, $config['widget_config'], $this->schema, $this->types[$name], $this->namespace))
-        {
-            return false;
-        }
-        
-        return true;
-    }
-    
+    /**
+     * Clears possible dangling references and instance new datatype proxy object
+     */
     private function load_types()
     {
-        $this->types = array();
-
-        foreach ($this->schema->fields as $name => $config)
-        {
-            if (! $this->load_type($name, $config))
-            {
-                return false;
-            }
-        }
+        unset($this->types);
+        $this->types = new midcom_helper_datamanager_typeproxy($this->schema, $this->storage);
     }
     
-    public function load_type($name, $config = null)
+    /**
+     * Clears possible dangling references and instance new widget proxy object
+     */
+    private function load_widgets()
     {
-        if ($config == null)
-        {
-            $config = $this->schema->fields[$name];            
-        }
-
-        if (! isset($config['type']) )
-        {
-            throw new Exception("The field {$name} is missing type");
-        }
-
-        $type_class = $config['type'];
-        
-        if (strpos($type_class, '_') === false)
-        {
-            $type_class = "midcom_helper_datamanager_type_{$type_class}";
-        }
-
-        $this->types[$name] = new $type_class();
-        if (! $this->types[$name]->initialize($name, $config['type_config'], $this->storage))
-        {
-            return false;
-        }
-        
-        return true;        
+        unset($this->widgets);
+        $this->widgets = new midcom_helper_datamanager_widgetproxy($this->schema, $this->storage);
     }
 
     /**

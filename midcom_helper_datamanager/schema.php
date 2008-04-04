@@ -236,14 +236,14 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         if (   !array_key_exists('type', $config)
             || empty($config['type']))
         {
-            throw new Exception("Field '{$config['name']}' in schema '{$this->name}' loaded from {$this->schemadb_path} is missing *type* definition");
+            throw new midcom_helper_datamanager_exception_type("Field '{$config['name']}' in schema '{$this->name}' loaded from {$this->schemadb_path} is missing *type* definition");
             // this will exit
         }
         
         if (   !array_key_exists('widget', $config)
             || empty($config['widget']))
         {
-            throw new Exception("Field '{$config['name']}' in schema '{$this->name}' loaded from {$this->schemadb_path} is missing *widget* definition");
+            throw new midcom_helper_datamanager_exception_widget("Field '{$config['name']}' in schema '{$this->name}' loaded from {$this->schemadb_path} is missing *widget* definition");
             // this will exit
         }
         
@@ -362,6 +362,14 @@ class midcom_helper_datamanager_schema extends midcom_core_component_baseclass
         }
         
         return $schemadb;
+    }
+    /**
+     * Check if given field name exists in this schema
+     * @param string $name name of the schema field
+     */
+    public function field_exists($name)
+    {
+        return isset($this->fields[$name]);
     }
 }
 
