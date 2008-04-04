@@ -260,6 +260,7 @@ class midcom_helper_datamanager_datamanager
      {
      }
      */   
+
 }
 
 ?>
