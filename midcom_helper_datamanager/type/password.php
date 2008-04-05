@@ -57,7 +57,8 @@ class midcom_helper_datamanager_type_password extends midcom_helper_datamanager_
         if (substr($source, 0, 2) == '**')
         {
             $this->value = null;
-        }else
+        }
+        else
         {
             $this->value = substr($source, 2);
         }
@@ -86,7 +87,8 @@ class midcom_helper_datamanager_type_password extends midcom_helper_datamanager_
             // Enforce crypt mode
             $salt = chr(rand(64, 126)) . chr(rand(64, 126));
             $this->_real_value = crypt($this->value, $salt);
-        }else
+        }
+        else
         {
             $this->_real_value = "**{$this->value}";
         }
