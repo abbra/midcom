@@ -48,7 +48,13 @@ class midcom_core_controllers_page
         }
         catch (midcom_helper_datamanager_exception_datamanager $e)
         {
-            // TODO: add uimessage of $e->getMessage();
+            $uimessages = new midcom_core_services_uimessages();
+            $uimessages->add(array(
+                'title' => 'Error while editing page', //TODO: Localization
+                'message' => $e->getMessage(),
+                'type' => 'error'
+            ));
+            
             header("Location: {$_MIDCOM->context->prefix}");
             exit();
         }
