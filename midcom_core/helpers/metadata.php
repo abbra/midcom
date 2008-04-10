@@ -91,11 +91,11 @@ class midcom_core_helpers_metadata
             $person = $_MIDCOM->authentication->get_person();
             $object->metadata->locker = $person->guid;
         }
-        
+
         $approved = midcom_core_helpers_metadata::is_approved(&$object);
-        
+
         $object->update();
-        
+
         if ($approved)
         {
             // TODO: This should be a SUDO operation
