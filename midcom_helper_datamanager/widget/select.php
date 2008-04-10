@@ -83,7 +83,7 @@ class midcom_helper_datamanager_widget_select extends midcom_helper_datamanager_
         $options = $this->type->list_all();
         foreach ($options as $value => $label)
         {
-            $output .= "        <option value=" . midcom_helper_xsspreventer_helper::value($value) . '>' . midcom_helper_xsspreventer_helper::option($label) . "</option>\n"; 
+            $output .= "        <option value=" . midcom_helper_xsspreventer_helper::escape_attribute($value) . '>' . midcom_helper_xsspreventer_helper::escape_element('option', $label) . "</option>\n"; 
         }
 
         $output .= "    </select>\n";
@@ -99,7 +99,7 @@ class midcom_helper_datamanager_widget_select extends midcom_helper_datamanager_
             {
                 $output .= ' disabled="disabled"';
             }
-            $output .= ' value=' . midcom_helper_xsspreventer_helper::value($othervalue) . " />\n";
+            $output .= ' value=' . midcom_helper_xsspreventer_helper::escape_attribute($othervalue) . " />\n";
             $output .= "</label>\n";
         }
 

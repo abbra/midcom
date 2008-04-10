@@ -94,7 +94,7 @@ class midcom_helper_datamanager_widget_text extends midcom_helper_datamanager_wi
      */
     public function render_html()
     {
-        $output =  "<label for=\"{$this->namespace}_{$this->main_input_name}\"><span>{$this->field['title']}</span>\n";
+        $output =  "<label class=\"text\" for=\"{$this->namespace}_{$this->main_input_name}\"><span>{$this->field['title']}</span>\n";
         $output .= "    <input id=\"{$this->namespace}_{$this->main_input_name}\" name=\"{$this->namespace}_{$this->main_input_name}\" size=\"{$this->size}\"";
         if ($this->maxlenght > 0)
         {
@@ -104,7 +104,7 @@ class midcom_helper_datamanager_widget_text extends midcom_helper_datamanager_wi
         {
             $output .= ' disabled="disabled"';
         }
-        $output .= ' value=' . midcom_helper_xsspreventer_helper::value($this->type->value) . " />\n";
+        $output .= ' value=' . midcom_helper_xsspreventer_helper::escape_attribute($this->type->value) . " />\n";
         $output .= "</label>\n";
         return $output;
     }

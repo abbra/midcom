@@ -132,7 +132,7 @@ class midcom_helper_datamanager_widget_textarea extends midcom_helper_datamanage
         {
             $output .= ' disabled="disabled"';
         }
-        $output .= '>' . midcom_helper_xsspreventer_helper::textarea($this->type->value) . "</textarea>\n";
+        $output .= '>' . midcom_helper_xsspreventer_helper::escape_element('textarea', $this->type->value) . "</textarea>\n";
         $output .= "</label>\n";
         return $output;
     }
