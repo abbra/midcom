@@ -3,17 +3,17 @@ services_authorization: midcom_core_services_authorization_simple
 services_templating: midcom_core_services_templating_midgard
 services_sessioning: midcom_core_services_sessioning_midgard
 services_uimessages: midcom_core_services_uimessages_midgard
+cache_directory: __MIDGARDCACHE__/midgard
 enable_benchmark: false
 enable_included_list: false
-enable_jquery_framework: false
-enable_js_midcom: false
-js_midcom_config: 'enable_watchers: true, debug: true'
+enable_jquery_framework: true
+enable_js_midcom: true
+js_midcom_config: 'enable_watchers: true, debug: false'
 date_formats:
     short: '%d/%m/%Y'
     long: '%x %X'
+schemadb_default: file:/midcom_core/configuration/schema.yml
 default_timezone: UTC
-enable_jquery_framework: false
-enable_js_midcom: false
 toolbar_configuration:
     type: float
     js:
@@ -35,6 +35,16 @@ routes:
         action: edit
         route: /__midcom/edit
         content_entry_point: midcom-edit-page
+    page_create:
+        controller: midcom_core_controllers_page
+        action: create
+        route: /__midcom/create
+        content_entry_point: midcom-edit-page
+    page_delete:
+        controller: midcom_core_controllers_page
+        action: delete
+        route: /__midcom/delete
+        content_entry_point: midcom-delete-page
     comet_messages:
         controller: midcom_core_controllers_comet
         action: messages

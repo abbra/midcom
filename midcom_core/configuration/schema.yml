@@ -1,5 +1,5 @@
 default:
-    description: article
+    description: page
     fields:
         name:
             title: url name
@@ -11,13 +11,13 @@ default:
             type: text
             widget: text
             required: true
-        abstract:
-            title: abstract
-            type: text
-            widget: textarea
         content:
             title: content
             type: text
             type_config:
                 output_mode: html
             widget: textarea
+        component:
+            title: component
+            type: text
+            widget: text

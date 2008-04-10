@@ -20,8 +20,9 @@ class midcom_helper_datamanager_datamanager
 {
     
     private $schemadb = null;
-    protected $schema = null;
-    protected $schema_name = null;
+    public $schema = null;
+    public $schema_name = null;
+    protected $form = null;
 
     /**
      * This is the storage implementation which is used for operation on the types. It encapsulates
@@ -31,12 +32,11 @@ class midcom_helper_datamanager_datamanager
      */
     public $storage = null;
     
-    protected $types = null;
-    protected $widgets = null;
+    public $types = null;
 
     public function __construct(&$schemadb)
     {
-        if (! is_a('midcom_helper_datamanager_schema', $schemadb))
+        if (! $schemadb instanceof midcom_helper_datamanager_schema)
         {
             try
             {
@@ -45,10 +45,23 @@ class midcom_helper_datamanager_datamanager
             catch (Exception $e)
             {
                 throw new midcom_helper_datamanager_exception_schema("given schema {$schemadb} is not instance of datamanager schema or a valid schema path");
-            }            
+            }
+            
+            return;
         }
-        
+
         $this->schemadb =& $schemadb;
+
+    }
+
+    public function &get_form($form_class = 'simple')
+    {
+        if (strpos($form_class, '_') === false)
+        {
+            $form_class = "midcom_helper_datamanager_form_{$form_class}";
+        }
+        $this->form = new $form_class($this->schema, $this->types, $this->storage, $this);
+        return $this->form;
     }
 
     /**
@@ -85,13 +98,16 @@ class midcom_helper_datamanager_datamanager
         $this->schema =& $this->schemadb[$name];
         $this->schema_name = $name;
         
-        if (! is_a('midcom_helper_datamanager_schema', $schema))
+        if (! $this->schema instanceof midcom_helper_datamanager_schema)
         {
             throw new midcom_helper_datamanager_exception_schema('given schema is not instance of datamanager schema');
         }
 
         $this->load_types();
-        $this->load_widgets();
+        if ($this->form instanceof midcom_helper_datamanager_form)
+        {
+            $this->form->load_widgets();
+        }
 
         return true;
     }
@@ -102,21 +118,13 @@ class midcom_helper_datamanager_datamanager
     private function load_types()
     {
         unset($this->types);
+        if (! $this->storage instanceof midcom_helper_datamanager_storage)
+        {
+            $this->storage = new midcom_helper_datamanager_storage_null($this->schema);
+        }
         $this->types = new midcom_helper_datamanager_typeproxy($this->schema, $this->storage);
     }
     
-    /**
-     * Clears possible dangling references and instance new widget proxy object
-     */
-    private function load_widgets()
-    {
-        if (! is_a($types, 'midcom_helper_datamanager_typeproxy'))
-        {
-            throw new midcom_helper_datamanager_exception_datamanager('$this->types is not instance of midcom_helper_datamanager_typeproxy');
-        }
-        unset($this->widgets);
-        $this->widgets = new midcom_helper_datamanager_widgetproxy($this->schema, $this->storage, $this->types);
-    }
 
     /**
      * This function sets the system to use a specific storage object. You can pass
@@ -142,13 +150,19 @@ class midcom_helper_datamanager_datamanager
             return false;
         }
 
-        if (! is_a($object, 'midcom_helper_datamanager_storage'))
+        if (! $object instanceof midcom_helper_datamanager_storage)
         {
             $this->storage = new midcom_helper_datamanager_storage_midgard($this->schema, $object);
         }
         else
         {
             $this->storage =& $object;
+        }
+
+        $this->load_types();
+        if ($this->form instanceof midcom_helper_datamanager_form)
+        {
+            $this->form->load_widgets();
         }
 
         // For reasons I do not completely comprehend, PHP drops the storage references into the types
@@ -182,7 +196,7 @@ class midcom_helper_datamanager_datamanager
      */
     public function autoset_storage(&$object, $strict = false)
     {
-        if (is_a($object, 'midcom_helper_datamanager2_storage'))
+        if ($object instanceof midcom_helper_datamanager2_storage)
         {
             $schema = $object->object->get_parameter('midcom_helper_datamanager', 'schema_name');
         }
@@ -254,7 +268,8 @@ class midcom_helper_datamanager_datamanager
      public function __destructor()
      {
      }
-     */   
+     */
+
 }
 
 ?>

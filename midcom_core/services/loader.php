@@ -16,29 +16,40 @@ class midcom_core_services_loader
     }
     
     public function &load($name, &$configuration=null)
-    {        
-        $services_implementation = $_MIDCOM->configuration->get("services_{$name}");
-        if (   $services_implementation
-            && !array_key_exists($name, $this->services))
-        {
-            if (! is_null($configuration))
-            {
-                $this->services[$name] = new $services_implementation(&$configuration);
-            }
-            else
-            {
-                $this->services[$name] = new $services_implementation();
-            }
-        }
-        
-        if (array_key_exists($name, $this->services))
+    {
+        if (isset($this->services[$name]))
         {
             return $this->services[$name];
         }
+        
+        $interface_file = MIDCOM_ROOT . "/midcom_core/services/{$name}.php";
+        if (!file_exists($interface_file))
+        {
+            throw new Exception("Service {$name} not installed");
+        }
+        
+        if (!class_exists("midcom_core_services_{$name}"))
+        {
+            //echo "midcom_core_services_{$name}\n<br />";
+            //include($interface_file);
+        }
+        
+        $services_implementation = $_MIDCOM->configuration->get("services_{$name}");
+        if (!$services_implementation)
+        {
+            throw new Exception("No implementation defined for service {$name}");
+        }
+        
+        if (! is_null($configuration))
+        {
+            $this->services[$name] = new $services_implementation(&$configuration);
+        }
         else
         {
-            throw new Exception("Couldn't load service {$name}. Please check your configuration!");
+            $this->services[$name] = new $services_implementation();
         }
+        
+        return $this->services[$name];
     }
 }
 

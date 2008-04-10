@@ -20,7 +20,7 @@ class midcom_core_controllers_comet
     
     public function action_messages($route_id, &$data, $args)
     {
-        $uimessages = new midcom_core_services_uimessages();
+        $uimessages = $_MIDCOM->serviceloader->load('uimessages');
         
         if (   !$uimessages->supports('comet')
             || !$uimessages->can_view())

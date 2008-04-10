@@ -92,7 +92,7 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
                 {
                     $jsconfig .= ", ";
                 }                
-                $curr_key_i += 1;      
+                $curr_key_i += 1;
             }
             
             $jsconfig .= '}';
@@ -257,12 +257,36 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
         //     $topic = new midcom_db_topic($topic->id);
         // }
                 
-        $this->helper->add_item(MIDCOM_TOOLBAR_NODE,
+        $this->helper->add_item
+        (
+            MIDCOM_TOOLBAR_NODE,
             array
             (
                 MIDCOM_TOOLBAR_URL => "/__midcom/edit/",
                 MIDCOM_TOOLBAR_LABEL => 'edit node',
                 MIDCOM_TOOLBAR_ICON => 'midcom_core/stock-icons/16x16/edit.png',
+                MIDCOM_TOOLBAR_ACCESSKEY => 'e',
+            )
+        );
+        $this->helper->add_item
+        (
+            MIDCOM_TOOLBAR_NODE,
+            array
+            (
+                MIDCOM_TOOLBAR_URL => "/__midcom/delete/",
+                MIDCOM_TOOLBAR_LABEL => 'delete node',
+                MIDCOM_TOOLBAR_ICON => 'midcom_core/stock-icons/16x16/trash.png',
+                MIDCOM_TOOLBAR_ACCESSKEY => 'd',
+            )
+        );
+        $this->helper->add_item
+        (
+            MIDCOM_TOOLBAR_NODE,
+            array
+            (
+                MIDCOM_TOOLBAR_URL => "/__midcom/create/",
+                MIDCOM_TOOLBAR_LABEL => 'create subnode',
+                MIDCOM_TOOLBAR_ICON => 'midcom_core/stock-icons/16x16/new-html.png',
                 MIDCOM_TOOLBAR_ACCESSKEY => 'e',
             )
         );

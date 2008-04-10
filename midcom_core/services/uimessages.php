@@ -11,7 +11,7 @@
   *
   * @package midcom_core
   */
-interface midcom_core_services_uimessage
+interface midcom_core_services_uimessages
 {
     /**
      * @param &$configuration Configuration for the current uimessage type
@@ -40,7 +40,7 @@ interface midcom_core_services_uimessage
  *
  * @package midcom_core
  */
-class midcom_core_services_uimessages
+class midcom_core_services_uimessages_baseclass
 {
     public $implementation = null;
     private $configuration = array();

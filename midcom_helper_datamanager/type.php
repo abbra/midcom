@@ -19,7 +19,7 @@ interface midcom_helper_datamanager_type
      *
      * @see midcom_helper_datamanager_type_baseclass::__construct
      */
-    function __construct($name, $config, &$storage);
+    public function initialize($name, $config, &$storage);
     
     /**
      * Small helper which sets the current storage object to a new one. The
@@ -27,23 +27,7 @@ interface midcom_helper_datamanager_type
      *
      * @see midcom_helper_datamanager_type_baseclass::set_storage
      */
-    function set_storage(&$storage);
-
-    /**
-     * This function, is called  before the configuration keys are merged into the types
-     * configuration.
-     *
-     * @see midcom_helper_datamanager_type_baseclass::on_configuring
-     */
-    function on_configuring($config);
-    
-    /**
-     * This event handler is called after construction, so passing references to $this to the
-     * outside is safe at this point.
-     *
-     * @see midcom_helper_datamanager_type_baseclass::on_initalize
-     */
-    function on_initialize();
+    public function set_storage(&$storage);
     
     /**
      * Converts from storage format to "operational" format, which might include
@@ -73,17 +57,6 @@ interface midcom_helper_datamanager_type
      * @see midcom_helper_datamanager_type_baseclass::validate
      */
     function validate();
-
-    /**
-     * Type-specific validation callback, this is executed before any custom validation
-     * rules which apply through the customization interface.
-     *
-     * In case validation fails, you should assign an (already translated) error message
-     * to the validation_error public member.
-     *
-     * @see midcom_helper_datamanager_type_baseclass::on_validate
-     */
-     function on_validate();
 
     /**
      * Checks whether the current user has the given privilege on the storage backend.
@@ -140,6 +113,8 @@ class midcom_helper_datamanager_type_baseclass implements midcom_helper_datamana
      * @var string
      */
     public $validation_error = '';
+    
+    public $serialized_storage;
 
     /**
      * Initializes and configures the type.
@@ -149,7 +124,7 @@ class midcom_helper_datamanager_type_baseclass implements midcom_helper_datamana
      * @param midcom_helper_datamanager_storage $storage A reference to the storage object to use.
      * @return boolean Indicating success. If this is false, the type will be unusable.
      */
-    public function __construct($name, $config, &$storage)
+    public function initialize($name, $config, &$storage)
     {
         $this->name = $name;
         $this->set_storage($storage);
@@ -229,6 +204,11 @@ class midcom_helper_datamanager_type_baseclass implements midcom_helper_datamana
     {
         die ('The function ' . __CLASS__ . '::' . __FUNCTION__ . ' must be implemented in subclasses.');
     }
+    
+    public function convert_to_raw()
+    {
+        return $this->convert_to_storage();
+    }
 
     /**
      * Main validation interface, currently only calls the main type callback, but this
@@ -267,7 +247,23 @@ class midcom_helper_datamanager_type_baseclass implements midcom_helper_datamana
     public function can_do($privilege)
     {
         return $this->storage->can_do($privilege);
-    }    
+    }
+    
+    /**
+     * Magic getters for the contents of the field in a given format
+     */
+    public function __get($key)
+    {
+        switch ($key)
+        {
+            case 'as_html':
+                return $this->convert_to_html();
+            case 'as_csv':
+                return $this->convert_to_csv();
+            case 'as_raw':
+                return $this->convert_to_raw();
+        }
+    }
 }
 
 ?>

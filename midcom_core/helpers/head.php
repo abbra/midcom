@@ -34,7 +34,7 @@ class midcom_core_helpers_head
     public $jquery_enabled = false;    
     public $jsmidcom_enabled = false;
     
-    public function __construct($enable_jquery=false, $enable_jsmidcom=false, $jsmidcom_config=null)
+    public function __construct($enable_jquery = false, $enable_jsmidcom = false, $jsmidcom_config = null)
     {
         if ($enable_jquery)
         {
@@ -47,7 +47,7 @@ class midcom_core_helpers_head
         }
     }
     
-    public function enable_jquery($version="1.2.3")
+    public function enable_jquery($version = '1.2.3')
     {
         if ($this->jquery_enabled)
         {
@@ -91,7 +91,7 @@ class midcom_core_helpers_head
         }
     }
     
-    public function enable_jsmidcom($config=null)
+    public function enable_jsmidcom($config = null)
     {
         if ($this->jsmidcom_enabled)
         {
@@ -119,7 +119,7 @@ class midcom_core_helpers_head
         $script .= "    MIDCOM_STATIC_URL: '" . MIDCOM_STATIC_URL . "',\n";
         $script .= "    MIDCOM_PAGE_PREFIX: '/'\n"; //$_MIDCOM->get_page_prefix()
         $script .= "});\n";
-        
+
         if (! is_null($config))
         {
             $config_str = $config;
