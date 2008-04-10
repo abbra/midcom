@@ -36,50 +36,44 @@ class midcom_core_controllers_page extends midcom_core_controllers_baseclasses_m
     
     public function populate_toolbar()
     {
-        if ($_MIDCOM->authorization->can_do('midgard:update', $this->object))
-        {
-            $_MIDCOM->toolbar->add_item
+    $_MIDCOM->toolbar->add_item
+        (
+            'node', 
+            'edit', 
+            array
             (
-                'node', 
-                'edit', 
-                array
-                (
-                    'label' => 'edit page',            
-                    'route_id' => 'page_edit',
-                    'icon' => 'edit',
-                )
-            );
-        }
+                'label' => 'edit page',            
+                'route_id' => 'page_edit',
+                'icon' => 'edit',
+                'enabled' => $_MIDCOM->authorization->can_do('midgard:update', $this->object),
+            )
+        );
         
-        if ($_MIDCOM->authorization->can_do('midgard:create', $this->object))
-        {
-            $_MIDCOM->toolbar->add_item
+        $_MIDCOM->toolbar->add_item
+        (
+            'node', 
+            'create', 
+            array
             (
-                'node', 
-                'create', 
-                array
-                (
-                    'label' => 'create subpage',
-                    'route_id' => 'page_create',
-                    'icon' => 'new-html',
-                )
-            );
-        }
+                'label' => 'create subpage',
+                'route_id' => 'page_create',
+                'icon' => 'new-html',
+                'enabled' => $_MIDCOM->authorization->can_do('midgard:create', $this->object),
+            )
+        );
         
-        if ($_MIDCOM->authorization->can_do('midgard:delete', $this->object))
-        {
-            $_MIDCOM->toolbar->add_item
+        $_MIDCOM->toolbar->add_item
+        (
+            'node', 
+            'delete', 
+            array
             (
-                'node', 
-                'delete', 
-                array
-                (
-                    'label' => 'delete page',
-                    'route_id' => 'page_delete',
-                    'icon' => 'trash',
-                )
-            );
-        }
+                'label' => 'delete page',
+                'route_id' => 'page_delete',
+                'icon' => 'trash',
+                'enabled' => $_MIDCOM->authorization->can_do('midgard:delete', $this->object),
+            )
+        );
     }
     
     public function action_create($route_id, &$data, $args)
