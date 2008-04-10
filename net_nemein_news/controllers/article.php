@@ -11,14 +11,14 @@
  *
  * @package midcom_core
  */
-class net_nemein_news_controllers_article
+class net_nemein_news_controllers_article extends midcom_core_controllers_baseclasses_manage
 {
     public function __construct($instance)
     {
         $this->configuration = $instance->configuration;
     }
     
-    private function load_article(&$data, $args)
+    public function load_object($args)
     {
         $topic_guid = $this->configuration->get('news_topic');
         if (!$topic_guid)
@@ -35,40 +35,12 @@ class net_nemein_news_controllers_article
         {
             throw new midcom_exception_notfound("Article {$args['name']} not found.");
         }
-        $data['article'] = $articles[0];
-        
-        // Load the article via Datamanager for configurability
-        $_MIDCOM->componentloader->load('midcom_helper_datamanager');
-        
-        $dm = new midcom_helper_datamanager_datamanager($this->configuration->get('schemadb_default'));
-        $dm->autoset_storage($data['article']);
-        
-        $data['article_dm'] =& $dm;
+        $this->object = $articles[0];
     }
     
-    public function action_show($route_id, &$data, $args)
+    public function get_object_url()
     {
-        $this->load_article($data, $args);
-    }
-    
-    public function action_edit($route_id, &$data, $args)
-    {
-        $this->load_article($data, $args);
-
-        $_MIDCOM->authorization->require_do('midgard:update', $data['article']);
-        
-        // Handle saves through the datamanager
-        $data['article_dm_form'] =& $data['article_dm']->get_form('simple');
-        try
-        {
-            $data['article_dm_form']->process();
-        }
-        catch (midcom_helper_datamanager_exception_datamanager $e)
-        {
-            // TODO: add uimessage of $e->getMessage();
-            header('Location: ' . $_MIDCOM->dispatcher->generate_url('show', array('name' => $data['article']->name)));
-            exit();
-        }
+        return $_MIDCOM->dispatcher->generate_url('show', array('name' => $this->object->name));
     }
 }
 ?>

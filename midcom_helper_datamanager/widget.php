@@ -47,26 +47,22 @@ interface midcom_helper_datamanager_widget_interface
      *
      * The implementation of this handler is optional.
      *
-     * @param Array $results The complete form results, you need to extract all values
-     *     relevant for your type yourself.
+     * @param mixed $result data we got from form, relevant to widget as indicated by main_input_name, or null
+     *      if we do not have relevant data.
      *
      * @see midcom_helper_datamanager_widget_baseclass::on_submit
      */
-    function on_submit($results);
+    function on_submit($result);
 
     /**
      * This function is invoked if the widget should extract the corresponding data
-     * from the form results passed in $results. 
+     * from the form result passed in $result. 
      * 
-     * Form validation has already been done before, this function will only be called 
-     * if and only if the form validation succeeds.
-     *
-     * @param Array $results The complete form results, you need to extract all values
-     *     relevant for your type yourself.
+     * @param mixed $result data we got from form, relevant to widget as indicated by main_input_name
      *
      * @see midcom_helper_datamanager_widget_baseclass::sync_type_with_widget
      */
-    function sync_widget2type($results);
+    function sync_widget2type($result);
 
     /**
      * When called, this method should display the current data without any
@@ -265,22 +261,22 @@ class midcom_helper_datamanager_widget implements midcom_helper_datamanager_widg
      *
      * The implementation of this handler is optional.
      *
-     * @param Array $results The complete form results, you need to extract all values
+     * @param Array $result The complete form result, you need to extract all values
      *     relevant for your type yourself.
      */
-    public function on_submit($results) {}
+    public function on_submit($result) {}
 
     /**
      * This function is invoked if the widget should extract the corresponding data
-     * from the form results passed in $results. 
+     * from the form result passed in $result. 
      * 
      * Form validation has already been done before, this function will only be called 
      * if and only if the form validation succeeds.
      *
-     * @param Array $results The complete form results, you need to extract all values
+     * @param Array $result The complete form result, you need to extract all values
      *     relevant for your type yourself.
      */
-    public function sync_widget2type($results)
+    public function sync_widget2type($result)
     {
         throw new midcom_helper_datamanager_exception_widget('Method ' . __FUNCTION__ . ' must be overridden.');
     }

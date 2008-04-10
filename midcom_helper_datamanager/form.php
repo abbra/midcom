@@ -196,15 +196,20 @@ class midcom_helper_datamanager_form
         return "</form>\n";
     }
 
-    protected function pass_results_to_method($method, &$results)
+    protected function pass_results_to_method($method, &$results, $pass_null = false)
     {
         foreach ($this->schema->field_order as $field_name)
         {
             if (!array_key_exists($field_name, $results))
             {
-                $results[$field_name] = null;
+                if (!$pass_null)
+                {
+                    continue;
+                }
+                $this->widgets->$field_name->$method(null);
+                continue;
             }
-            $this->widgets->$field_name->$method($results);
+            $this->widgets->$field_name->$method($results[$field_name]);
         }
     }
 

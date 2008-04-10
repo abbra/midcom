@@ -71,6 +71,7 @@ class midcom_helper_datamanager_widget_textarea extends midcom_helper_datamanage
      * @access public
      */
     var $wrap = 'virtual';
+
     /**
      * Add expand link to textbox?
      * @access public
@@ -110,9 +111,9 @@ class midcom_helper_datamanager_widget_textarea extends midcom_helper_datamanage
         return true;
     }
 
-    function sync_widget2type($results)
+    function sync_widget2type($result)
     {
-        $this->type->value = $results[$this->name];
+        $this->type->value = $result;
     }
     
     /**
