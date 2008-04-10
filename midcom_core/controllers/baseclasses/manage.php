@@ -81,7 +81,7 @@ abstract class midcom_core_controllers_baseclasses_manage
         $this->load_datamanager($data, $this->configuration->get('schemadb'));
         $data['object'] =& $this->object;
         
-        $_MIDCOM->authorization->require_do('midgard:delete', $data['page']);
+        $_MIDCOM->authorization->require_do('midgard:delete', $this->object);
         if(isset($_POST['delete']))
         {
             $this->object->delete();
