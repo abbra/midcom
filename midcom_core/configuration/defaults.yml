@@ -12,6 +12,7 @@ js_midcom_config: 'enable_watchers: true, debug: false'
 date_formats:
     short: '%d/%m/%Y'
     long: '%x %X'
+metadata_lock_timeout: 30
 schemadb_default: file:/midcom_core/configuration/schema.yml
 default_timezone: UTC
 toolbar_configuration:

@@ -19,25 +19,53 @@ class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_fo
      */
     public function process()
     {
+        $handle_locks = false;
+        if (   $this->datamanager->storage instanceof midcom_helper_datamanager_storage_midgard
+            && $this->datamanager->storage->object)
+        {
+            if (midcom_core_helpers_metadata::is_locked($this->datamanager->storage->object))
+            {
+                throw new midcom_helper_datamanager_exception_locked();
+            }
+            
+            $handle_locks = true;
+        }
+
         $results = $this->get_submit_values();
         $operation = $this->compute_form_result();
         switch ($operation)
         {
             case 'cancel':
+                if ($handle_locks)
+                {
+                    midcom_core_helpers_metadata::unlock($this->datamanager->storage->object);
+                }
                 throw new midcom_helper_datamanager_exception_cancel();
             
             case 'previous':
             case 'edit':
                 // What ?
+                if ($handle_locks)
+                {
+                    midcom_core_helpers_metadata::lock($this->datamanager->storage->object);
+                }
                 break;
 
             case 'next':
                 $this->pass_results_to_method('on_submit', $results);
                 $this->pass_results_to_method('sync_widget2type', $results);
+                if ($handle_locks)
+                {
+                    midcom_core_helpers_metadata::lock($this->datamanager->storage->object);
+                }
                 // and then what ?
                 break;
 
             case 'save':
+                if ($handle_locks)
+                {
+                    midcom_core_helpers_metadata::unlock($this->datamanager->storage->object);
+                }
                 $this->pass_results_to_method('on_submit', $results);
                 $this->pass_results_to_method('sync_widget2type', $results);
                 $this->datamanager->save();
