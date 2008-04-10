@@ -1,0 +1,51 @@
+#container,
+#siteinfo
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+#content
+{
+  color: #444444;
+}
+
+#content h1
+{
+  font-size: 180%;
+  margin: 1em 0 0.4em;
+  color: #6B4F2E;
+}
+
+#content h2
+{
+  font-size: 150%;
+  margin: 1em 0 0.4em;
+  color: #6B4F2E;
+}
+
+#content h3
+{
+  font-size: 120%;
+  margin: 1em 0 0.4em;
+  color: #6B4F2E;
+}
+
+#content h4
+{
+  font-size: 110%;
+  margin: 1em 0 0.4em;
+}
+
+#content p
+{
+  margin: 0.2em 0 0.8em;
+}
+
+#content ul
+{
+  margin: 0.2em 0 0.8em;
+  padding-left: 2em;
+}
+}
