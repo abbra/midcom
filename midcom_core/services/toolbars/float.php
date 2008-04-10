@@ -262,7 +262,7 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
             MIDCOM_TOOLBAR_NODE,
             array
             (
-                MIDCOM_TOOLBAR_URL => "/__midcom/edit/",
+                MIDCOM_TOOLBAR_URL => "{$_MIDGARD['self']}__midcom/edit/",
                 MIDCOM_TOOLBAR_LABEL => 'edit node',
                 MIDCOM_TOOLBAR_ICON => 'midcom_core/stock-icons/16x16/edit.png',
                 MIDCOM_TOOLBAR_ACCESSKEY => 'e',
@@ -273,7 +273,7 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
             MIDCOM_TOOLBAR_NODE,
             array
             (
-                MIDCOM_TOOLBAR_URL => "/__midcom/delete/",
+                MIDCOM_TOOLBAR_URL => "{$_MIDGARD['self']}__midcom/delete/",
                 MIDCOM_TOOLBAR_LABEL => 'delete node',
                 MIDCOM_TOOLBAR_ICON => 'midcom_core/stock-icons/16x16/trash.png',
                 MIDCOM_TOOLBAR_ACCESSKEY => 'd',
@@ -284,7 +284,7 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
             MIDCOM_TOOLBAR_NODE,
             array
             (
-                MIDCOM_TOOLBAR_URL => "/__midcom/create/",
+                MIDCOM_TOOLBAR_URL => "{$_MIDGARD['self']}__midcom/create/",
                 MIDCOM_TOOLBAR_LABEL => 'create subnode',
                 MIDCOM_TOOLBAR_ICON => 'midcom_core/stock-icons/16x16/new-html.png',
                 MIDCOM_TOOLBAR_ACCESSKEY => 'e',
