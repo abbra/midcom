@@ -31,7 +31,13 @@ class midcom_core_services_l10n_gettext implements midcom_core_services_l10n
      */
     public function get($string)
     {
-        return _($string);
+        // Return the inputted string, if gettext is not available
+        if (!function_exists('gettext'))
+        {
+            return $string;
+        }
+        
+        return gettext($string);
     }
 }
 ?>
