@@ -4,6 +4,7 @@ services_templating: midcom_core_services_templating_midgard
 services_sessioning: midcom_core_services_sessioning_midgard
 services_uimessages: midcom_core_services_uimessages_midgard
 services_toolbars: midcom_core_services_toolbars_float
+services_l10n: midcom_core_services_l10n_gettext
 cache_directory: __MIDGARDCACHE__/midgard
 enable_benchmark: false
 enable_included_list: false

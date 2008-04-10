@@ -130,7 +130,8 @@ class midcom_core_services_toolbars_float extends midcom_core_services_toolbars_
     
     private function generate_logo($title, $link, $image_path)
     {        
-        $logo = array(
+        $logo = array
+        (
             'title' => $title,
             'url' => $link,
             'path' => MIDCOM_STATIC_URL . $image_path,
