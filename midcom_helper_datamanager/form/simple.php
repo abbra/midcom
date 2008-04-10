@@ -32,6 +32,7 @@ class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_fo
 
         $results = $this->get_submit_values();
         $operation = $this->compute_form_result();
+
         switch ($operation)
         {
             case 'cancel':

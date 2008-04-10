@@ -1,29 +1,42 @@
 <?php
+/**
+ * @package midcom_helper_xsspreventer
+ * @author The Midgard Project, http://www.midgard-project.org
+ * @copyright The Midgard Project, http://www.midgard-project.org
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
+ */
 
+/**
+ * Static helper functions for the Cross-Site Scripting (XSS) preventer.
+ *
+ * @package midcom_helper_xsspreventer
+ */
 class midcom_helper_xsspreventer_helper
 {
-    static public function value($input)
+    /**
+     * Escape value of an XML attribute
+     *
+     * @param string $input Attribute value to escape
+     */
+    static public function escape_attribute($input)
     {
         $output = str_replace('"', '&quot;', $input);
         return '"' . $output . '"';
     }
 
-    static public function textarea($input)
-    {
-        return midcom_helper_xsspreventer_helper::escape_tag_close('textarea', $input);
-    }
-
-    static public function option($input)
-    {
-        return midcom_helper_xsspreventer_helper::escape_tag_close('option', $input);
-    }
-
-    static public function escape_tag_close($tagname, $input)
+    /**
+     * Escape contents of an XML element
+     *
+     * @param string $element XML element to close
+     * @param string $input Element content to escape
+     */
+    static public function escape_element($element, $input)
     {
         return preg_replace_callback
         (
-        	"%(<\s*)+(/\s*)+{$tagname}%i", 
-            create_function(
+        	"%(<\s*)+(/\s*)+{$element}%i", 
+            create_function
+            (
             	'$matches',
             	'return htmlentities($matches[0]);'
             ),

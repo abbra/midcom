@@ -89,7 +89,7 @@ class midcom_helper_datamanager_form
     protected function resolve_namespace()
     {
         // TODO figure something shorter based on schema and storage
-        $this->namespace = md5(serialize($this->schema) . serialize($this->storage));
+        $this->namespace = md5("{$this->schema->schemadb_path}:{$this->schema->name}:" . $this->storage->get_identifier());
     }
 
     /**
