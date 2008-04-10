@@ -73,6 +73,17 @@ abstract class midcom_core_controllers_baseclasses_manage
             header('Location: ' . $this->get_object_url());
             exit();
         }
+        
+        $_MIDCOM->head->add_link_head
+        (
+            array
+            (
+                'rel'   => 'stylesheet',
+                'type'  => 'text/css',
+                'media' => 'screen',
+                'href'  => MIDCOM_STATIC_URL . '/midcom_helper_datamanager/simple.css',
+            )
+        );
     }
         
     public function action_delete($route_id, &$data, $args)
