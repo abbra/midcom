@@ -42,5 +42,27 @@ class net_nemein_news_controllers_article extends midcom_core_controllers_basecl
     {
         return $_MIDCOM->dispatcher->generate_url('show', array('name' => $this->object->name));
     }
+    
+    public function populate_toolbar()
+    {
+        if ($_MIDCOM->authorization->can_do('midgard:update', $this->object))
+        {
+            $_MIDCOM->toolbar->add_item
+            (
+                'article', 
+                'edit', 
+                array
+                (
+                    'label' => 'edit article',            
+                    'route_id' => 'edit',
+                    'route_arguments' => array
+                    (
+                        'name' => $this->object->name,
+                    ),
+                    'icon' => 'edit',
+                )
+            );
+        }
+    }
 }
 ?>

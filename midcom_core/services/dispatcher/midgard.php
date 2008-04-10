@@ -215,7 +215,7 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
      */
     public function generate_url($route_id, array $args)
     {
-        $route_definitions = $_MIDCOM->context->component_instance->configuration->get('routes');
+        $route_definitions = $this->get_routes();
         if (!isset($route_definitions[$route_id]))
         {
             throw new OutOfBoundsException("route_id '{$route_id}' not found in routes configuration");

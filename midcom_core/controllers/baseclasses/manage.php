@@ -35,6 +35,8 @@ abstract class midcom_core_controllers_baseclasses_manage
      */
     abstract public function get_object_url();
     
+    abstract public function populate_toolbar();
+    
     public function load_datamanager(&$data, $schemadb)
     {
         // Load the article via Datamanager for configurability
@@ -51,6 +53,8 @@ abstract class midcom_core_controllers_baseclasses_manage
         $this->load_object($args);
         $this->load_datamanager($data, $this->configuration->get('schemadb'));
         $data['object'] =& $this->object;
+        
+        $this->populate_toolbar();
     }
     
     public function action_edit($route_id, &$data, $args)
@@ -84,6 +88,8 @@ abstract class midcom_core_controllers_baseclasses_manage
                 'href'  => MIDCOM_STATIC_URL . '/midcom_helper_datamanager/simple.css',
             )
         );
+        
+        $this->populate_toolbar();
     }
         
     public function action_delete($route_id, &$data, $args)
@@ -103,6 +109,8 @@ abstract class midcom_core_controllers_baseclasses_manage
             header("Location: {$_MIDGARD['prefix']}/"); // TODO: This needs a better redirect
             exit();     
         }
+        
+        $this->populate_toolbar();
     }
 }
 ?>

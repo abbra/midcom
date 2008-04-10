@@ -49,10 +49,10 @@ $css_class = $data['css_class'];
                         <a href="${item/url}" title="${item/label}" class="${section/css_class}_item_link" accesskey="${item/accesskey}" >
                             <span tal:condition="item/icon" tal:omit-tag="">
 
-                            <img src="${item/iconurl}" alt="${item/label}" />
+                            <img src="${item/icon_url}" alt="${item/label}" />
                             </span>
 
-                            &nbsp;<span tal:content="item/htmllabel" class="${section/css_class}_item_label"></span>
+                            &nbsp;<span tal:content="item/label" class="${section/css_class}_item_label"></span>
                         </a>
                     </span>
                     <span tal:condition="item/is_post" tal:omit-tag="">

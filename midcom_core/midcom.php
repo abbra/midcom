@@ -70,7 +70,7 @@ class midcom_core_midcom
         // Load the preferred templating implementation
         $services_templating_implementation = $this->configuration->get('services_templating');
         $this->templating = new $services_templating_implementation();
-        
+                
         // Load the component loader
         $this->componentloader = new midcom_core_component_loader();
         
@@ -134,9 +134,10 @@ class midcom_core_midcom
         {
             $this->timer->setMarker('MidCOM::process');
         }
-
-        $toolbar = new midcom_core_services_toolbars($this->configuration->get('toolbar_configuration'));
-        $this->toolbar = $toolbar->get_implementation();
+        
+        // Load the preferred toolbar implementation
+        $services_toolbars_implementation = $this->configuration->get('services_toolbars');
+        $this->toolbar = new $services_toolbars_implementation($this->configuration->get('services_toolbars_configuration'));
 
         $_MIDCOM->templating->append_directory(MIDCOM_ROOT . '/midcom_core/templates');        
         $this->dispatcher->populate_environment_data();

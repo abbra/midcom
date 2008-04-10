@@ -3,6 +3,7 @@ services_authorization: midcom_core_services_authorization_simple
 services_templating: midcom_core_services_templating_midgard
 services_sessioning: midcom_core_services_sessioning_midgard
 services_uimessages: midcom_core_services_uimessages_midgard
+services_toolbars: midcom_core_services_toolbars_float
 cache_directory: __MIDGARDCACHE__/midgard
 enable_benchmark: false
 enable_included_list: false
@@ -15,8 +16,7 @@ date_formats:
 metadata_lock_timeout: 30
 schemadb: file:/midcom_core/configuration/schema.yml
 default_timezone: UTC
-toolbar_configuration:
-    type: float
+services_toolbars_configuration:
     js:
     logos:
         midgard:
