@@ -14,6 +14,7 @@
 class midcom_core_services_authentication_basic implements midcom_core_services_authentication
 {
     private $user = null;
+    private $person = null;
     
     public function __construct()
     {
@@ -40,7 +41,12 @@ class midcom_core_services_authentication_basic implements midcom_core_services_
             return null;
         }
         
-        return $this->user->get_person();
+        if (is_null($this->person))
+        {
+            $this->person = $this->user->get_person();
+        }
+        
+        return $this->person;
     }
 
     public function login($username, $password)
