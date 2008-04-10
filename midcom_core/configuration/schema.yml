@@ -16,7 +16,7 @@ default:
             type: text
             type_config:
                 output_mode: html
-            widget: textarea
+            widget: fckeditor
         component:
             title: component
             type: text
