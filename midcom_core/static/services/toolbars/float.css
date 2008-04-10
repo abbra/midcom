@@ -34,12 +34,16 @@ ul.midcom_services_toolbars li
 ul.midcom_services_toolbars a img
 {
     border-style: none;
+    vertical-align: middle;
 }
 
 ul.midcom_services_toolbars_items li
 {
     display: inline;
     padding-right: 0.8em;
+    vertical-align: middle;
+    padding-bottom: 2px;
+    padding-top: 4px;
 }
 
 ul.midcom_services_toolbars_items li a

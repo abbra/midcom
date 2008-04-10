@@ -44,13 +44,7 @@ class midcom_helper_datamanager_widget_fckeditor extends midcom_helper_datamanag
      */
     public $fck_config_snippet = null;
     
-    
-    public $_static_toolbar_sets = array(
-        'Default', 'Basic'
-    );
-    public $_default_toolbar_set_contents = array(
-        
-    );
+    public $toolbarset = 'Midgard';
 
     /**
      * Configuration array
@@ -99,17 +93,17 @@ class midcom_helper_datamanager_widget_fckeditor extends midcom_helper_datamanag
         // TODO: Escape to be safe
         $output .= ">{$this->type->value}";
         $output .= "</textarea>";
-        $output .= ("
-        <script>
-           jQuery(document).ready(function(){
-              var oFCKeditor{$this->namespace}_{$this->main_input_name} = new FCKeditor(\"{$this->namespace}_{$this->main_input_name}\");
-              oFCKeditor{$this->namespace}_{$this->main_input_name}.BasePath = \"".$this->configuration['basepath']."\";
-              oFCKeditor{$this->namespace}_{$this->main_input_name}.Height = {$this->height};
-              oFCKeditor{$this->namespace}_{$this->main_input_name}.Width = \"{$this->width}\";
-              oFCKeditor{$this->namespace}_{$this->main_input_name}.ReplaceTextarea();
-           });
-        </script>
-              ");
+        $output .= "<script>\n";
+        $output .= "   jQuery(document).ready(function(){\n";
+        $output .= "       var oFCKeditor{$this->namespace}_{$this->main_input_name} = new FCKeditor(\"{$this->namespace}_{$this->main_input_name}\");\n";
+        $output .= "       oFCKeditor{$this->namespace}_{$this->main_input_name}.BasePath = \"".$this->configuration['basepath']."\";\n";
+        $output .= "       oFCKeditor{$this->namespace}_{$this->main_input_name}.Height = {$this->height};\n";
+        $output .= "       oFCKeditor{$this->namespace}_{$this->main_input_name}.Width = \"{$this->width}\";\n";
+        $output .= "       oFCKeditor{$this->namespace}_{$this->main_input_name}.ToolbarSet = \"{$this->toolbarset}\";\n";
+        
+        $output .= "       oFCKeditor{$this->namespace}_{$this->main_input_name}.ReplaceTextarea();\n";
+        $output .= "   });\n";
+        $output .= "</script>\n";
         $output .= "</label>\n";
         return $output;
     }

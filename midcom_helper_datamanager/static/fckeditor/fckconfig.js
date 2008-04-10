@@ -117,6 +117,16 @@ FCKConfig.ToolbarSets["Basic"] = [
 	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
 ] ;
 
+FCKConfig.ToolbarSets["Midgard"] = [
+       ['Source','FitWindow','ShowBlocks','-','Cut','Copy','Paste','PasteText','PasteWord'],
+       ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+    	'/',
+       ['FontFormat','-','Bold','Italic','-','Subscript','Superscript'],
+       ['OrderedList','UnorderedList','Blockquote'],
+       ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+       ['Link','Unlink','Anchor']
+] ;
+
 FCKConfig.EnterMode = 'p' ;			// p | div | br
 FCKConfig.ShiftEnterMode = 'br' ;	// p | div | br
 
