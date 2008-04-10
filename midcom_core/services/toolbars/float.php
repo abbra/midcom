@@ -165,7 +165,8 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
     
     private function generate_logo($title, $link, $image_path)
     {        
-        $logo = array(
+        $logo = array
+        (
             'title' => $title,
             'url' => $link,
             'path' => MIDCOM_STATIC_URL . $image_path,
@@ -196,25 +197,29 @@ class midcom_core_services_toolbars_float implements midcom_core_services_toolba
             }
         }
         
-        $this->sections[MIDCOM_TOOLBAR_NODE] = array(
+        $this->sections[MIDCOM_TOOLBAR_NODE] = array
+        (
             'name' => 'section_' . MIDCOM_TOOLBAR_NODE,
             'title' => 'Node',
             'css_class' => "{$this->configuration['className']}_section_" . MIDCOM_TOOLBAR_NODE,
             'items' => array(),
         );
-        $this->sections[MIDCOM_TOOLBAR_VIEW] = array(
+        $this->sections[MIDCOM_TOOLBAR_VIEW] = array
+        (
             'name' => 'section_' . MIDCOM_TOOLBAR_VIEW,
             'title' => 'View',
             'css_class' => "{$this->configuration['className']}_section_" . MIDCOM_TOOLBAR_VIEW,
             'items' => array(),
         );
-        $this->sections[MIDCOM_TOOLBAR_HOST] = array(
+        $this->sections[MIDCOM_TOOLBAR_HOST] = array
+        (
             'name' => 'section_' . MIDCOM_TOOLBAR_HOST,
             'title' => 'Host',
             'css_class' => "{$this->configuration['className']}_section_" . MIDCOM_TOOLBAR_HOST,
             'items' => array(),
         );
-        $this->sections[MIDCOM_TOOLBAR_HELP] = array(
+        $this->sections[MIDCOM_TOOLBAR_HELP] = array
+        (
             'name' => 'section_' . MIDCOM_TOOLBAR_HELP,
             'title' => 'Help',
             'css_class' => "{$this->configuration['className']}_section_" . MIDCOM_TOOLBAR_HELP,
