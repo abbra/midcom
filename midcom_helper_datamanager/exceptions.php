@@ -96,4 +96,13 @@ class midcom_helper_datamanager_exception_validation extends midcom_helper_datam
 {
 }
 
+
+/**
+ * Datamanager locked exception
+ *
+ * @package midcom_helper_datamanager
+ */
+class midcom_helper_datamanager_exception_locked extends midcom_helper_datamanager_exception_datamanager
+{
+}
 ?>
