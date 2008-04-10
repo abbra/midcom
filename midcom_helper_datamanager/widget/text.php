@@ -104,8 +104,7 @@ class midcom_helper_datamanager_widget_text extends midcom_helper_datamanager_wi
         {
             $output .= ' disabled="disabled"';
         }
-        // TODO: Escape to be safe
-        $output .= " value=\"{$this->type->value}\"/>\n";
+        $output .= ' value=' . midcom_helper_xsspreventer_helper::value($this->type->value) . " />\n";
         $output .= "</label>\n";
         return $output;
     }
