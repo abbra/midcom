@@ -84,7 +84,7 @@ abstract class midcom_core_services_toolbars_baseclass implements midcom_core_se
         }
         
         $item['icon_url'] = MIDCOM_STATIC_URL . "{$this->icon_pack}{$item['icon']}.png";
-        
+
         return $item;
     }
 
