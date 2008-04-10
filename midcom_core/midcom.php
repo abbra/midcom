@@ -20,6 +20,7 @@ class midcom_core_midcom
     public $componentloader;
     public $dispatcher;
     public $templating;
+    public $l10n;
 
     // Helpers
     public $navigation;
@@ -82,6 +83,10 @@ class midcom_core_midcom
         
         // Load the navigation helper
         //$this->navigation = new midcom_core_helpers_navigation();
+        
+        // Load the localization
+        $services_l10n_implementation = $this->configuration->get('services_l10n');
+        $this->l10n = new $services_l10n_implementation();
 
         // Load the head helper
         $this->head = new midcom_core_helpers_head
