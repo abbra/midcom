@@ -1,7 +1,7 @@
 news_topic: 
 index_show_articles: 6
 link_articles_to_external_url: false
-schemadb_default: file:/net_nemein_news/configuration/schema.yml
+schemadb: file:/net_nemein_news/configuration/schema.yml
 routes:
     index:
         controller: net_nemein_news_controllers_index
