@@ -14,7 +14,7 @@
  * @package midcom_helper_datamanager
  *
  */
-class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_type
+class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_type_baseclass
 {
     /**
      * A list of the currently selected keys. This is an array even for single select
@@ -22,20 +22,20 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
      * consists only of the object keys, use the resolver function to get the corresponding
      * values.
      *
-     * @var Array
+     * @var array
      * @access public
      */
-    public $selection = Array();
+    public $selection = array();
 
     /**
      * The options available to the client. You should not access this variable directly,
      * as this information may be loaded on demand, depending on the types configuration.
      *
      * @see get_all_options()
-     * @var Array
+     * @var array
      * @access public
      */
-    public $options = null;
+    public $options = array();
     
      /**
      * This member contains the other key, in case it is set. In case of multiselects,
@@ -47,7 +47,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
      * @var String
      * @access public
      */
-    public $others = Array();
+    public $others = array();
     
     /**
      * Set this to true if you want to allow selection of values not part of the regular
@@ -145,7 +145,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
     /**
      * Returns the full listing of all available key/value pairs.
      *
-     * @return Array Listing of all keys, as an associative array.
+     * @return array Listing of all keys, as an associative array.
      */
     function list_all()
     {
@@ -165,8 +165,8 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
      */
     function convert_from_storage($source)
     {
-        $this->selection = Array();
-        $this->others = Array();
+        $this->selection = array();
+        $this->others = array();
 
         if (   $source === false
             || $source === null)
@@ -185,7 +185,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
             // plain storage), therefore we typecast here. This is easier to do then having
             // the same code below twice thus unifying allow_other handling mainly.
 
-            $source = Array($source);
+            $source = array($source);
         }
 
         foreach ($source as $key)
@@ -233,7 +233,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
      * Merges selection and others arrays, the validation cycle ensures that they are
      * right.
      *
-     * @return Array The storage information.
+     * @return array The storage information.
      */
     function convert_to_storage()
     {
@@ -266,7 +266,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
      * Converts the selected options according to the multiple_storagemode setting.
      *
      * @param mixed The stored data.
-     * @return Array The stored data converted back to an Array.
+     * @return array The stored data converted back to an array.
      */
     function _convert_multiple_from_storage($source)
     {
@@ -368,7 +368,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
             $options = $this->selection;
         }
 
-        $result = Array();
+        $result = array();
         foreach ($options as $key)
         {
             if (strpos($key, $glue) !== false)
@@ -411,7 +411,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
 
     function combine_values()
     {
-        $selection = Array();
+        $selection = array();
         foreach($this->selection as $item)
         {
             $selection[] = $this->get_name_for_key($item);
@@ -424,7 +424,7 @@ class midcom_helper_datamanager_type_select extends midcom_helper_datamanager_ty
             }
             else
             {
-                $values = array_merge($selection, Array($this->others));
+                $values = array_merge($selection, array($this->others));
             }
         }
         else

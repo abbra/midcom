@@ -92,6 +92,10 @@ abstract class midcom_core_controllers_baseclasses_manage
         $this->load_datamanager($data, $this->configuration->get('schemadb'));
         $data['object'] =& $this->object;
         
+        // Make a frozen form for display purposes
+        $data['datamanager_form'] =& $this->datamanager->get_form('simple');
+        $data['datamanager_form']->freeze();
+        
         $_MIDCOM->authorization->require_do('midgard:delete', $this->object);
         if(isset($_POST['delete']))
         {
