@@ -32,14 +32,14 @@ class midcom_helper_datamanager_form_simple extends midcom_helper_datamanager_fo
                 break;
 
             case 'next':
-                $this->pass_results_to_method('on_submit', $results);
-                $this->pass_results_to_method('sync_widget2type', $results);
+                $this->pass_results_to_method('on_submit', $results, true);
+                $this->pass_results_to_method('sync_widget2type', $results, false);
                 // and then what ?
                 break;
 
             case 'save':
-                $this->pass_results_to_method('on_submit', $results);
-                $this->pass_results_to_method('sync_widget2type', $results);
+                $this->pass_results_to_method('on_submit', $results, true);
+                $this->pass_results_to_method('sync_widget2type', $results, false);
                 $this->datamanager->save();
                 throw new midcom_helper_datamanager_exception_save();
                 // and then what ?

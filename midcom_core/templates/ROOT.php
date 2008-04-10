@@ -13,6 +13,7 @@ echo '<?' . 'xml version="1.0"' . '?>';
         <title tal:content="page/title">Midgardian</title>
         <span tal:replace="php: MIDCOM.head.print_elements()" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="shortcut icon" href="/midcom-static/midcom_core/midgard/favicon.ico" />
         <style type="text/css">
             BODY {
               font-family: "Arial", "Helvetica", "Geneva", sans-serif;

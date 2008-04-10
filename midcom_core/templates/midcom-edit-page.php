@@ -4,5 +4,5 @@
  *
  */
 ?>
-<div tal:content="structure midcom_core/page_dm_form/as_html">
+<div tal:content="structure midcom_core/datamanager_form/as_html">
 </div>
