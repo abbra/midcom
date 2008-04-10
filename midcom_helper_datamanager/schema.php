@@ -57,7 +57,7 @@ class midcom_helper_datamanager_schema
      *
      * @var Array
      */
-    private $schemadb_path = null;
+    public $schemadb_path = null;
 
     /**
      * A simple array holding the fields in the order they should be rendered identified

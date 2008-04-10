@@ -17,7 +17,7 @@
  *
  * @package midcom_helper_datamanager
  */
-class midcom_helper_datamanager_storage
+abstract class midcom_helper_datamanager_storage
 {
     /**
      * A reference to the data schema used for processing.
@@ -56,6 +56,13 @@ class midcom_helper_datamanager_storage
     {
         $this->schema =& $schema;
     }
+    
+    /**
+     * Return identifier for the storage. In case of Midgard storage this would return object's GUID
+     *
+     * @return string
+     */
+    abstract public function get_identifier();
 
     /**
      * This function will populate the $object member with a temporary object obtained
@@ -142,10 +149,7 @@ class midcom_helper_datamanager_storage
      * @param string $name The name of the field to save to.
      * @param mixed $data The data to save to.
      */
-    public function on_store_data($name, $data)
-    {
-        die ('The function ' . __CLASS__ . '::' . __FUNCTION__ . ' must be implemented in subclasses.');
-    }
+    abstract public function on_store_data($name, $data);
 
     public function load_type_data(&$type, $name)
     {
@@ -154,7 +158,8 @@ class midcom_helper_datamanager_storage
         {
             if ($type_definition['required'] == true)
             {
-                throw new midcom_helper_datamanager_exception_storage(
+                throw new midcom_helper_datamanager_exception_storage
+                (
                     "Failed to process the type array for the schema {$this->schema->name}: " . 
                     "The type for the required field {$name} was not found."
                 );
@@ -212,10 +217,7 @@ class midcom_helper_datamanager_storage
      * @param string $name The name of the field to load from.
      * @return mixed $data The data which has been loaded.
      */
-    protected function on_load_data($name)
-    {
-        die ('The function ' . __CLASS__ . '::' . __FUNCTION__ . ' must be implemented in subclasses.');
-    }
+    abstract protected function on_load_data($name);
 
     /**
      * This callback is invoked once the storage object has been completely updated with
@@ -223,10 +225,7 @@ class midcom_helper_datamanager_storage
      *
      * @return boolean Indicating success.
      */
-    protected function on_update_object()
-    {
-        die ('The function ' . __CLASS__ . '::' . __FUNCTION__ . ' must be implemented in subclasses.');
-    }
+    abstract protected function on_update_object();
 
     /**
      * Checks whether the current user has the given privilege on the storage backend.

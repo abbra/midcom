@@ -37,6 +37,16 @@ class midcom_helper_datamanager_storage_midgard extends midcom_helper_datamanage
 
         $this->object =& $object;
     }
+    
+    public function get_identifier()
+    {
+        if (!$this->object)
+        {
+            return '';
+        }
+        
+        return $this->object->guid;
+    }
 
     /**
      * Stores given value to field based on schema
