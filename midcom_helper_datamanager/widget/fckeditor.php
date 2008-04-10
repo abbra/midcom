@@ -70,9 +70,9 @@ class midcom_helper_datamanager_widget_fckeditor extends midcom_helper_datamanag
     function on_initialize()
     {
         // FIXME: Lots of hardcodings
-        $this->width = 400;
-        $this->height = 300;
-        $this->configuration['basepath'] = '/midcom-static/datamanager/fckeditor/';
+        $this->width = '80%';
+        $this->height = 460;
+        $this->configuration['basepath'] = MIDCOM_STATIC_URL . '/midcom_helper_datamanager/fckeditor/';
         
         // FIXME: As soon as language support is up, remove hardcoding
         $language = 'en';
@@ -89,9 +89,9 @@ class midcom_helper_datamanager_widget_fckeditor extends midcom_helper_datamanag
     
   public function render_html()
     {
-        $output = "<script src=\"{$this->configuration['basepath']}/fckeditor.js\"></script>";
+        $output = "<script src=\"{$this->configuration['basepath']}fckeditor.js\"></script>";
         $output .=  "<label for=\"{$this->namespace}_{$this->main_input_name}\"><span>{$this->field['title']}</span>\n";
-        $output .= "    <textarea style=\"width: {$this->width}; height: {$this->height};\" id=\"{$this->namespace}_{$this->main_input_name}\" name=\"{$this->namespace}_{$this->main_input_name}\"";
+        $output .= "    <textarea class=\"fckeditor\" style=\"width: {$this->width}; height: {$this->height}px;\" id=\"{$this->namespace}_{$this->main_input_name}\" name=\"{$this->namespace}_{$this->main_input_name}\"";
         if ($this->frozen)
         {
             $output .= ' disabled="disabled"';
@@ -104,8 +104,8 @@ class midcom_helper_datamanager_widget_fckeditor extends midcom_helper_datamanag
            jQuery(document).ready(function(){
               var oFCKeditor{$this->namespace}_{$this->main_input_name} = new FCKeditor(\"{$this->namespace}_{$this->main_input_name}\");
               oFCKeditor{$this->namespace}_{$this->main_input_name}.BasePath = \"".$this->configuration['basepath']."\";
-              oFCKeditor{$this->namespace}_{$this->main_input_name}.width=\"{$this->width}\";
-              oFCKeditor{$this->namespace}_{$this->main_input_name}.width=\"{$this->height}\";
+              oFCKeditor{$this->namespace}_{$this->main_input_name}.Height = {$this->height};
+              oFCKeditor{$this->namespace}_{$this->main_input_name}.Width = \"{$this->width}\";
               oFCKeditor{$this->namespace}_{$this->main_input_name}.ReplaceTextarea();
            });
         </script>

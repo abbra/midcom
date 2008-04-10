@@ -123,7 +123,7 @@ class midcom_helper_datamanager_widget_textarea extends midcom_helper_datamanage
     public function render_html()
     {
         $output =  "<label for=\"{$this->namespace}_{$this->main_input_name}\"><span>{$this->field['title']}</span>\n";
-        $output .= "    <textarea id=\"{$this->namespace}_{$this->main_input_name}\" name=\"{$this->namespace}_{$this->main_input_name}\" size=\"{$this->size}\"";
+        $output .= "    <textarea class=\"textarea\" id=\"{$this->namespace}_{$this->main_input_name}\" name=\"{$this->namespace}_{$this->main_input_name}\" size=\"{$this->size}\"";
         if ($this->maxlenght > 0)
         {
             $output .= " maxlenght=\"{$maxlenght}\"";
