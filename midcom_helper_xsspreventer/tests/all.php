@@ -15,6 +15,11 @@ require_once('PHPUnit/TextUI/TestRunner.php');
 
 require_once('tests/helpers.php');
 
+/**
+ * Run all XSS tests
+ *
+ * @package midcom_helper_xsspreventer
+ */
 class midcom_helper_xsspreventer_tests_all
 {   
     public static function main()
@@ -36,7 +41,8 @@ class midcom_helper_xsspreventer_tests_all
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'midcom_helper_xsspreventer_tests_all::main') {
+if (PHPUnit_MAIN_METHOD == 'midcom_helper_xsspreventer_tests_all::main') 
+{
     midcom_helper_xsspreventer_tests_all::main();
 }
 ?>
