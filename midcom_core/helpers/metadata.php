@@ -24,6 +24,31 @@ class midcom_core_helpers_metadata
         return false;
     }
     
+    public static function approve(&$object)
+    {
+        $_MIDCOM->authorization->require_do('midcom:approve', $object);        
+        
+        $object->metadata->approved = gmstrftime('%Y-%m-%d %T', time());
+
+        if ($_MIDCOM->authentication->is_user())
+        {
+            $person = $_MIDCOM->authentication->get_person();
+            $object->metadata->approver = $person->guid;
+        }
+        
+        $object->update();
+    }
+    
+    public static function unapprove(&$object)
+    {
+        $_MIDCOM->authorization->require_do('midcom:approve', $object);        
+        
+        $object->metadata->approved = '';
+        $object->metadata->approver = '';
+        
+        $object->update();
+    }
+    
     public static function is_locked(&$object)
     {
         if (empty($object->metadata->locked))
@@ -36,7 +61,20 @@ class midcom_core_helpers_metadata
         
         if (time() > $lock_timeout)
         {
+            // Stale lock
+            // TODO: Should we clear the stale lock here?
             return false;
+        }
+        
+        if ($_MIDCOM->authentication->is_user())
+        {
+            $person = $_MIDCOM->authentication->get_person();
+            
+            if ($object->metadata->locker == $person->guid)
+            {
+                // If you locked it yourself, you can also edit it
+                return false;
+            }
         }
         
         return true;
@@ -51,10 +89,18 @@ class midcom_core_helpers_metadata
         if ($_MIDCOM->authentication->is_user())
         {
             $person = $_MIDCOM->authentication->get_person();
-            $object->metadata->locker =Ê$person->guid;
+            $object->metadata->locker = $person->guid;
         }
         
+        $approved = midcom_core_helpers_metadata::is_approved(&$object);
+        
         $object->update();
+        
+        if ($approved)
+        {
+            // TODO: This should be a SUDO operation
+            midcom_core_helpers_metadata::approve(&$object);
+        }
     }
     
     public static function unlock(&$object)
@@ -81,7 +127,15 @@ class midcom_core_helpers_metadata
         $object->metadata->locked = '';
         $object->metadata->locker = '';
 
+        $approved = midcom_core_helpers_metadata::is_approved(&$object);
+        
         $object->update();
+        
+        if ($approved)
+        {
+            // TODO: This should be a SUDO operation
+            midcom_core_helpers_metadata::approve(&$object);
+        }
     }
 }
 ?>
