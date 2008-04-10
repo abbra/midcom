@@ -34,6 +34,8 @@ class midcom_helper_datamanager_form
     protected $datamanager = null;
     
     protected $storage = null;
+    
+    protected $frozen = false;
 
     public $widgets = null;
     
@@ -178,6 +180,10 @@ class midcom_helper_datamanager_form
     
     public function render_toolbar_html()
     {
+        if ($this->frozen)
+        {
+            return '';
+        }
         $output  = "<div class=\"form_toolbar\">\n";
         
         foreach ($this->schema->operations as $operation => $config)
@@ -230,6 +236,24 @@ class midcom_helper_datamanager_form
     public function process()
     {
         throw new midcom_helper_datamanager_exception_datamanager('Method ' . __FUNCTION__ . ' must be overridden.');
+    }
+    
+    public function freeze()
+    {
+        $this->frozen = true;
+        foreach ($this->schema->field_order as $field_name)
+        {
+            $this->widgets->$field_name->freeze();
+        }
+    }
+    
+    public function unfreeze()
+    {
+        $this->frozen = false;
+        foreach ($this->schema->field_order as $field_name)
+        {
+            $this->widgets->$field_name->unfreeze();
+        }
     }
 
     public function get_submit_values()
