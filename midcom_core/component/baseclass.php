@@ -13,7 +13,7 @@
  *
  * @package midcom_core
  */
-class midcom_core_component_baseclass implements midcom_core_component_interface
+abstract class midcom_core_component_baseclass implements midcom_core_component_interface
 {
     public $configuration = false;
     
@@ -27,6 +27,8 @@ class midcom_core_component_baseclass implements midcom_core_component_interface
         $this->on_initialize();
     }
 
-    function on_initialize() {}
+    public function on_initialize()
+    {
+    }
 }
 ?>

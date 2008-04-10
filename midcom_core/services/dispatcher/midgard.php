@@ -20,6 +20,8 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
     public $component_name = '';
     protected $route_id = false;
     protected $action_arguments = array();
+    protected $core_routes = array();
+    protected $component_routes = array();
 
     public function __construct()
     {
@@ -100,16 +102,16 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
     
     public function get_routes()
     {
-        $core_routes = $_MIDCOM->configuration->get('routes');
+        $this->core_routes = $_MIDCOM->configuration->get('routes');
         
         if (!$_MIDCOM->context->component_instance)
         {
-            return $core_routes;
+            return $this->core_routes;
         }
         
-        $component_routes = $_MIDCOM->context->component_instance->configuration->get('routes');
+        $this->component_routes = $_MIDCOM->context->component_instance->configuration->get('routes');
         
-        return array_merge($core_routes, $component_routes);
+        return array_merge($this->core_routes, $this->component_routes);
     }
 
     /**
@@ -167,10 +169,27 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         
         $this->data_to_context($selected_route_configuration, $data);
     }
+    
+    private function is_core_route($route_id)
+    {
+        if (isset($this->component_routes[$route_id]))
+        {
+            return false;
+        }
+        
+        return true;
+    }
 
     private function data_to_context($route_configuration, $data)
     {
-        $_MIDCOM->context->set_item($this->component_name, $data);
+        if ($this->is_core_route($this->route_id))
+        {
+            $_MIDCOM->context->set_item('midcom_core', $data);
+        }
+        else
+        {
+            $_MIDCOM->context->set_item($this->component_name, $data);
+        }
         
         // Set other context data from route
         if (isset($route_configuration['mimetype']))

@@ -83,7 +83,7 @@ class midcom_core_helpers_metadata
     public static function lock(&$object)
     {
         $_MIDCOM->authorization->require_do('midgard:update', $object);
-        
+
         $object->metadata->locked = gmstrftime('%Y-%m-%d %T', time());
 
         if ($_MIDCOM->authentication->is_user())
