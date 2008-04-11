@@ -6,7 +6,9 @@ Quick MidCOM 3 setup HOWTO
 3. Ensure the MidCOM 3 checkout is in php.ini `include_path`
 4. Point the `MidgardRootFile` of the Midgard Apache VirtualHost setup to MidCOM's `httpd/midcom-root.php`
 5. Patch your MgdObjects.xml (in `/usr/share/midgard`) to include a `component` property for `midgard_page` objects
-6. Start playing around
+6. Use `phing linkstatics` to link all CSS, JS and image files of MidCOM 3 distribution under `/usr/local/lib/midcom/static`
+7. Then symlink that as `midcom-static` under your DocumentRoot 
+8. Start playing around
 
 Troubleshooting
 ---------------
@@ -25,5 +27,5 @@ Alternatively add `deb http://packages.dotdeb.org etch all` and `deb-src http://
 ### Installing GIT
 
 1. Install GIT with `# apt-get install git-core`
-2. Get the GIT repository `# git-pull git://repo.or.cz/midcom.git`
+2. Get the GIT repository `# git clone git://repo.or.cz/midcom.git`
 3. Point the `MidgardRootFile` of the Midgard Apache VirtualHost setup to MidCOM's `httpd/midcom-root.php`
