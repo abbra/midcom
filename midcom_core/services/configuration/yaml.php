@@ -38,7 +38,7 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
         $filename = MIDCOM_ROOT . "/{$this->component}/configuration/defaults.yml";
         if (!file_exists($filename))
         {
-            return;
+            return array();
         }
         
         $yaml = file_get_contents($filename);
@@ -55,7 +55,7 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
         }
         catch (Exception $e)
         {
-            return;
+            return array();
         }
         $this->locals = $this->unserialize($snippet->code);
     }
