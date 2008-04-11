@@ -31,6 +31,13 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
             $this->load_objects($object);            
             $this->merged = array_merge($this->merged, $this->objects);
         }
+        
+        if (!is_array($this->merged))
+        {
+            // Safety
+            $this->merged= array();
+        }
+
     }
     
     private function load_globals()
@@ -38,11 +45,18 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
         $filename = MIDCOM_ROOT . "/{$this->component}/configuration/defaults.yml";
         if (!file_exists($filename))
         {
-            return array();
+            return;
         }
         
         $yaml = file_get_contents($filename);
         $this->globals = $this->unserialize($yaml);
+        
+        if (!is_array($this->locals))
+        {
+            // Safety
+            $this->locals = array();
+        }
+
     }
     
     private function load_locals()
@@ -55,9 +69,15 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
         }
         catch (Exception $e)
         {
-            return array();
+            return;
         }
         $this->locals = $this->unserialize($snippet->code);
+        
+        if (!is_array($this->locals))
+        {
+            // Safety
+            $this->locals = array();
+        }
     }
     
     private function load_objects($object)
