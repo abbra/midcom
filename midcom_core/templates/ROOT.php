@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="/midcom-static/midcom_core/midgard/screen.css" media="screen,projection,tv" />
         <link rel="stylesheet" type="text/css" href="/midcom-static/midcom_core/midgard/content.css" media="all" />
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-        <link rel="shortcut icon" href="midgard.ico" type="image/vnd.microsoft.icon" />
+        <link rel="shortcut icon" href="/midcom-static/midcom_core/midgard/midgard.ico" type="image/vnd.microsoft.icon" />
     </head>
     <body>
         <div id="container">
