@@ -31,5 +31,15 @@ interface midcom_core_services_authorization
      * to be thrown if the action is not valid.
      */
     public function require_do($privilege, $object, $user = null);
+    
+    /**
+     * Enter into SUDO mode. Component is required here for access control purposes as SUDO might be disabled for some parts
+     */
+    public function enter_sudo($component);
+    
+    /**
+     * Leave SUDO mode
+     */
+    public function leave_sudo();
 }
 ?>

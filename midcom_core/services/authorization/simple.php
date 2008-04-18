@@ -14,6 +14,8 @@
  */
 class midcom_core_services_authorization_simple implements midcom_core_services_authorization
 {
+    private $sudo = false;
+    
     /**
      * Starts up the authorization service and connects to various signals
      */
@@ -87,6 +89,11 @@ class midcom_core_services_authorization_simple implements midcom_core_services_
      */
     public function can_do($privilege, $object, $user = null)
     {
+        if ($this->sudo)
+        {
+            return true;
+        }
+        
         if ($privilege == 'midgard:read')
         {
             return true;
@@ -106,6 +113,24 @@ class midcom_core_services_authorization_simple implements midcom_core_services_
         {
             throw new midcom_exception_unauthorized("Not authorized to {$privilege} " . get_class($object) . " {$object->guid}");
         }
+    }
+    
+    /**
+     * Enter into SUDO mode. Component is required here for access control purposes as SUDO might be disabled for some parts
+     */
+    public function enter_sudo($component)
+    {
+        // TODO: Check per-component access control
+        $this->sudo = true;
+        return $this->sudo;
+    }
+    
+    /**
+     * Leave SUDO mode
+     */
+    public function leave_sudo()
+    {
+        $this->sudo = false;
     }
 }
 ?>
