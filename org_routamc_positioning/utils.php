@@ -161,7 +161,7 @@ class org_routamc_positioning_utils
      */
     static function pretty_print_location(org_routamc_positioning_spot $spot)
     {
-        $closest = org_routamc_positioning_utils::get_closest('org_routamc_positioning_city_dba', $spot, 1);
+        $closest = org_routamc_positioning_utils::get_closest('org_routamc_positioning_city', $spot, 1);
         $city_string = org_routamc_positioning_utils::pretty_print_coordinates($spot);
         foreach ($closest as $city)
         {
@@ -187,7 +187,7 @@ class org_routamc_positioning_utils
      */
     static function microformat_location(org_routamc_positioning_spot $spot)
     {
-        $closest = org_routamc_positioning_utils::get_closest('org_routamc_positioning_city_dba', $spot, 1);
+        $closest = org_routamc_positioning_utils::get_closest('org_routamc_positioning_city', $spot, 1);
 
         $latitude_string = org_routamc_positioning_utils::pretty_print_coordinate($spot->latitude);
         $latitude_string .= ($spot->latitude > 0) ? ' N' : ' S';
@@ -246,15 +246,15 @@ class org_routamc_positioning_utils
         // See what kind of object we're querying for
         switch ($class)
         {
-            case 'org_routamc_positioning_log_dba':
-            case 'org_routamc_positioning_city_dba':
-            case 'org_routamc_positioning_aerodrome_dba':
+            case 'org_routamc_positioning_log':
+            case 'org_routamc_positioning_city':
+            case 'org_routamc_positioning_aerodrome':
                 // Real position entry, query it directly
                 $classname = $class;
                 break;
             default:
                 // Non-positioning MidCOM DBA object, query it through location cache
-                $classname = 'org_routamc_positioning_location_dba';
+                $classname = 'org_routamc_positioning_location';
                 break;
         }
         return $classname;
@@ -279,7 +279,7 @@ class org_routamc_positioning_utils
         {
             $direct = true;
         }
-        $qb =  $classname::new_query_builder();
+        $qb =  new midgard_query_builder($classname);
 
         if (!$direct)
         {
