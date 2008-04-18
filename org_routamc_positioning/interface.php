@@ -13,5 +13,8 @@
  */
 class org_routamc_positioning extends midcom_core_component_baseclass
 {
+    const RELATION_IN = 10;
+    const RELATION_ABOUT = 20;
+    const RELATION_LOCATED = 30;
 }
 ?>

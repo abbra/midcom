@@ -351,6 +351,7 @@ class org_routamc_positioning_utils
                     {
                         // Instantiate the real object as the result
                         $result = new $class($result->parent);
+                        $result->spot = $result_spot;
                         $result->latitude = $result_spot->latitude;
                         $result->longitude = $result_spot->longitude;
                     }
@@ -372,12 +373,13 @@ class org_routamc_positioning_utils
         foreach ($results as $result)
         {
             $result_spot = new org_routamc_positioning_spot($result);
-            $distance = sprintf("%05d", round(org_routamc_positioning_utils::get_distance($center, $result_spot)));
+            $distance = sprintf("%05d", round(org_routamc_positioning_utils::get_distance($spot, $result_spot)));
 
             if (!$direct)
             {
                 // Instantiate the real object as the result
                 $result = new $class($result->parent);
+                $result->spot = $result_spot;
                 $result->latitude = $result_spot->latitude;
                 $result->longitude = $result_spot->longitude;
             }

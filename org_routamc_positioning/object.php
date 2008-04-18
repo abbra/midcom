@@ -49,9 +49,9 @@ class org_routamc_positioning_object
         $qb = org_routamc_positioning_location::new_query_builder();
         $qb->add_constraint('parent', '=', $this->object->guid);
         $qb->begin_group('OR');
-            $qb->add_constraint('relation', '=', ORG_ROUTAMC_POSITIONING_RELATION_IN);
-            $qb->add_constraint('relation', '=', ORG_ROUTAMC_POSITIONING_RELATION_LOCATED);
-        $qb->end_group('OR');
+            $qb->add_constraint('relation', '=', org_routamc_positioning::RELATION_IN);
+            $qb->add_constraint('relation', '=', org_routamc_positioning::RELATION_LOCATED);
+        $qb->end_group();
         $qb->add_order('metadata.published', 'DESC');
         $matches = $qb->execute();
         if (count($matches) == 0)
@@ -171,7 +171,7 @@ class org_routamc_positioning_object
                 // Cache the object's location into a location object
                 $location = new org_routamc_positioning_location();
                 $location->log = $log->id;
-                $location->relation = (int) ORG_ROUTAMC_POSITIONING_RELATION_IN;
+                $location->relation = (int) org_routamc_positioning::RELATION_IN;
                 $location->date = $time;
                 $location->parent = $this->object->guid;
                 $location->parentclass = get_class($this->object);
