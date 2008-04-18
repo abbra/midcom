@@ -115,6 +115,14 @@ class midcom_core_services_authorization_simple implements midcom_core_services_
         }
     }
     
+    public function require_user()
+    {
+        if (!$_MIDCOM->authentication->is_user())
+        {
+            throw new midcom_exception_unauthorized("Authentication required");
+        }
+    }
+    
     /**
      * Enter into SUDO mode. Component is required here for access control purposes as SUDO might be disabled for some parts
      */

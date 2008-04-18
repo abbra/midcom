@@ -43,7 +43,7 @@ class midcom_core_services_authentication_basic implements midcom_core_services_
         
         if (is_null($this->person))
         {
-            $this->person = $this->user->get_person();
+            $this->person = new midgard_person($this->user->guid);
         }
         
         return $this->person;
