@@ -1,15 +1,15 @@
 <?php
 /**
- * @package midcom_core
+ * @package net_nemein_news
  * @author The Midgard Project, http://www.midgard-project.org
  * @copyright The Midgard Project, http://www.midgard-project.org
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  */
 
 /**
- * Page management controller
+ * Article management controller
  *
- * @package midcom_core
+ * @package net_nemein_news
  */
 class net_nemein_news_controllers_article extends midcom_core_controllers_baseclasses_manage
 {
