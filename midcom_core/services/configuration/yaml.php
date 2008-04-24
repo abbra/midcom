@@ -84,6 +84,7 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
     {
         $mc = midgard_parameter::new_collector('parentguid', $object->guid);
         $mc->add_constraint('domain', '=', $this->component);
+        $mc->add_constraint('value', '<>', '');
         $mc->set_key_property('guid');
         $mc->add_value_property('name');
         $mc->add_value_property('value');
@@ -96,7 +97,7 @@ class midcom_core_services_configuration_yaml implements midcom_core_services_co
             {
                 continue;
             }
-            
+
             $this->objects[$key] = $mc->get_subkey($guid, 'value');
         }
     }

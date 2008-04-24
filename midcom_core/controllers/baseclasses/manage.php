@@ -62,9 +62,8 @@ abstract class midcom_core_controllers_baseclasses_manage
         $this->load_object($args);
         $this->load_datamanager($data, $this->configuration->get('schemadb'));
         $data['object'] =& $this->object;
-        
         $_MIDCOM->authorization->require_do('midgard:update', $this->object);
-        
+
         // Handle saves through the datamanager
         $data['datamanager_form'] =& $this->datamanager->get_form('simple');
         try

@@ -51,6 +51,11 @@ class midcom_core_services_authentication_basic implements midcom_core_services_
 
     public function login($username, $password)
     {
+        if (extension_loaded('midgard2'))
+        {
+            // FIXME: Remove this once midgard_user::auth works in Midgard 2.x
+            return true;
+        }
         $this->user = midgard_user::auth($username, $password, null);
         if (!$this->user)
         {
