@@ -28,14 +28,14 @@ class net_nemein_comettest_controllers_index
         $type = null;
         $name = null;
         
-        if (isset($_GET["cometType"]))
+        if (isset($_MIDCOM->dispatcher->get["cometType"]))
         {
-            $type = $_GET["cometType"];
+            $type = $_MIDCOM->dispatcher->get["cometType"];
         }
         
-        if (isset($_GET["cometName"]))
+        if (isset($_MIDCOM->dispatcher->get["cometName"]))
         {
-            $name = $_GET["cometName"];
+            $name = $_MIDCOM->dispatcher->get["cometName"];
         }
 
         if (   $type == null
@@ -74,14 +74,14 @@ class net_nemein_comettest_controllers_index
         $type = null;
         $name = null;
 
-        if (isset($_GET["cometType"]))
+        if (isset($_MIDCOM->dispatcher->get["cometType"]))
         {
-            $type = $_GET["cometType"];
+            $type = $_MIDCOM->dispatcher->get["cometType"];
         }
 
-        if (isset($_GET["cometName"]))
+        if (isset($_MIDCOM->dispatcher->get["cometName"]))
         {
-            $name = $_GET["cometName"];
+            $name = $_MIDCOM->dispatcher->get["cometName"];
         }
         
         if (   $type == null

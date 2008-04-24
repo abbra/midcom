@@ -21,13 +21,28 @@ class midcom_core_services_dispatcher_midgard2 extends midcom_core_services_disp
         {
             throw new Exception('Midgard 2.x is required for this MidCOM setup.');
         }
-        
-        if (isset($_GET))
-        {
-            $this->get = $_GET;
-        }
 
-        $this->argv = $_MIDGARD_CONNECTION->request_config->argv;
+        foreach ($_MIDGARD_CONNECTION->request_config->argv as $argument)
+        {
+            if (substr($argument, 0, 1) == '?')
+            {
+                // FIXME: For some reason we get GET parameters into the argv string too, move them to get instead
+                $gets = explode('&', substr($argument, 1));
+                foreach ($gets as $get_string)
+                {
+                    $get_pair = explode('=', $get_string);
+                    if (count($get_pair) != 2)
+                    {
+                        break;
+                    }
+                    $this->get[$get_pair[0]] = $get_pair[1];
+                }
+
+                break;
+            }
+            
+            $this->argv[] = $argument;
+        }
     }
     
     /**
