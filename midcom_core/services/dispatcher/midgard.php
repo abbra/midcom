@@ -29,6 +29,12 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         {
             $this->get = $_GET;
         }
+        
+        if (!extension_loaded('midgard'))
+        {
+            throw new Exception('Midgard 1.x is required for this MidCOM setup.');
+        }
+        
         /*
         FIXME: For some reason $_MIDGARD['argv'] is broken in 1.9
         if (isset($_MIDGARD['argv']))

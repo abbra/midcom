@@ -17,15 +17,17 @@ class midcom_core_services_dispatcher_midgard2 extends midcom_core_services_disp
 {
     public function __construct()
     {
+        if (!extension_loaded('midgard2'))
+        {
+            throw new Exception('Midgard 2.x is required for this MidCOM setup.');
+        }
+        
         if (isset($_GET))
         {
             $this->get = $_GET;
         }
 
-        if (isset($_MIDGARD['argv']))
-        {
-            $this->argv = $_MIDGARD['argv'];
-        }
+        $this->argv = $_MIDGARD_CONNECTION->request_config->argv;
     }
 }
 ?>
