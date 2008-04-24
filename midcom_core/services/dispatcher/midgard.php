@@ -92,7 +92,7 @@ class midcom_core_services_dispatcher_midgard implements midcom_core_services_di
         $this->populate_node_toolbar();
     }
     
-    private function populate_node_toolbar()
+    protected function populate_node_toolbar()
     {
         $_MIDCOM->toolbar->add_item
         (
